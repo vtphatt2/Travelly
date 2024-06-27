@@ -2,18 +2,25 @@ package com.example.travelly;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-    private LinearLayout llTrips, llHotel, llTransport, llEvents;
+    private BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,48 +32,26 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Home.newInstance()).commit();
 
-        llTrips = findViewById(R.id.llTrips);
-        llHotel = findViewById(R.id.llHotel);
-        llTransport = findViewById(R.id.llTransport);
-        llEvents = findViewById(R.id.llEvents);
-        llTrips.setOnClickListener(new View.OnClickListener() {
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Log.d("Success", "llTrips : On click");
-                showDialog("Trips");
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
+
+                if (item.getItemId() == R.id.menu_home) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Home.newInstance()).commit();
+                }
+//                else if (item.getItemId() == R.id.menu_account) {
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Account.newInstance()).commit();
+//                }
+
+                if (selectedFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Home.newInstance()).commit();
+                }
+                return true;
             }
         });
-
-        llHotel .setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Success", "llHotel  : On click");
-                showDialog("Hotel");
-            }
-        });
-
-        llEvents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Success", "llEvents : On click");
-                showDialog("Events");
-            }
-        });
-
-        llTransport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Success", "llTransport : On click");
-            }
-        });
-    }
-
-    private void showDialog(String title) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(title + " services are not available now.");
-        builder.setPositiveButton("OK", null);
-        builder.show();
     }
 }
