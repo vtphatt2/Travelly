@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.menu_home) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Home.newInstance()).commit();
                 }
-//                else if (item.getItemId() == R.id.menu_account) {
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Account.newInstance()).commit();
-//                }
+                else if (item.getItemId() == R.id.menu_account) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Account.newInstance()).commit();
+                }
 
                 if (selectedFragment != null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Home.newInstance()).commit();
