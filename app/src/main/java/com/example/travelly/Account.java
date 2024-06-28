@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 public class Account extends Fragment {
-    private LinearLayout llPayment, llSaved, llBooking, llSetting;
+    private LinearLayout llPersonal, llPayment, llSaved, llBooking, llSetting;
     private Button btnEndSession;
 
     public Account() {
@@ -35,11 +36,18 @@ public class Account extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
+        llPersonal = view.findViewById(R.id.llPersonal_info);
         llPayment = view.findViewById(R.id.llPayment);
         llSaved = view.findViewById(R.id.llSaved);
         llBooking = view.findViewById(R.id.llBooking);
         llSetting = view.findViewById(R.id.llSetting);
 
+        llPersonal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, EditInformation.newInstance()).commit();
+            }
+        });
 
         llPayment.setOnClickListener(new View.OnClickListener() {
             @Override
