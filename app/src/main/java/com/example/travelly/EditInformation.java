@@ -9,20 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 public class EditInformation extends Fragment {
     private PersonalInfo account;
     private Button btnSaveChanges;
     private ImageButton btnBack;
+    private TextView tvFirstName, tvLastName, tvPhone, tvEmail;
 
     public EditInformation() {
         // Required empty public constructor
     }
 
-    public static EditInformation newInstance() {
+    public static EditInformation newInstance(PersonalInfo account) {
         EditInformation fragment = new EditInformation();
-//        Bundle args = new Bundle();
-//        fragment.setArguments(args);
+        Bundle arguments = new Bundle();
+        arguments.putParcelable("PERSONAL_INFORMATION", account);
+        fragment.setArguments(arguments);
         return fragment;
     }
 
@@ -46,6 +49,30 @@ public class EditInformation extends Fragment {
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container, Account.newInstance(account)).commit();
             }
         });
+
+        btnSaveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                account.setFirstName(tvFirstName.getText().toString());
+                account.setLastName(tvLastName.getText().toString());
+                account.setPhone(tvPhone.getText().toString());
+                account.setEmail(tvEmail.getText().toString());
+            }
+        });
+
+
+        tvFirstName = view.findViewById(R.id.edit_text_FirstName);
+        tvLastName = view.findViewById(R.id.edit_text_LastName);
+        tvPhone = view.findViewById(R.id.edit_text_Phone);
+        tvEmail = view.findViewById(R.id.edit_text_Email);
+
+        if (getArguments().containsKey("PERSONAL_INFORMATION")) {
+            account = getArguments().getParcelable("PERSONAL_INFORMATION");
+            tvFirstName.setText(account.getFirstName());
+            tvLastName.setText(account.getLastName());
+            tvPhone.setText(account.getPhone());
+            tvEmail.setText(account.getEmail());
+        }
 
         return view;
     }

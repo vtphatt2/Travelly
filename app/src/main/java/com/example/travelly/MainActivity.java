@@ -20,7 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
-    private PersonalInfo account = new PersonalInfo("Vo", "Thinh Phat", "+84 769 310 566", "thinhphat544@gmail.com");
+    private PersonalInfo account = new PersonalInfo("Vo", "Thinh Phat", "+84 769 310 566", "thinhphat544@gmail.co");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
