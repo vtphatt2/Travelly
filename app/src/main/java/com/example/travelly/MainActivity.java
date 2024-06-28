@@ -20,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
+    private PersonalInfo account = new PersonalInfo("Vo", "Thinh Phat", "+84 769 310 566", "thinhphat544@gmail.com");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Home.newInstance()).commit();
                 }
                 else if (item.getItemId() == R.id.menu_account) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Account.newInstance()).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Account.newInstance(account)).commit();
                 }
                 return true;
             }

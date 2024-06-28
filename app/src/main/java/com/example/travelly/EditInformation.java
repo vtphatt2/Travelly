@@ -11,8 +11,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 public class EditInformation extends Fragment {
-    Button btnSaveChanges;
-    ImageButton btnBack;
+    private PersonalInfo account;
+    private Button btnSaveChanges;
+    private ImageButton btnBack;
 
     public EditInformation() {
         // Required empty public constructor
@@ -42,7 +43,7 @@ public class EditInformation extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, Account.newInstance()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, Account.newInstance(account)).commit();
             }
         });
 
