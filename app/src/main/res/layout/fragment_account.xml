@@ -66,7 +66,8 @@
             android:id="@+id/llPayment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:clickable="true">
 
             <ImageView
                 android:layout_marginLeft="20dp"
@@ -84,9 +85,11 @@
 
         <!--Saved-->
         <LinearLayout
+            android:id="@+id/llSaved"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:clickable="true">
 
             <ImageView
                 android:layout_marginLeft="20dp"
@@ -104,9 +107,11 @@
 
         <!--Booking history-->
         <LinearLayout
+            android:id="@+id/llBooking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:clickable="true">
 
             <ImageView
                 android:layout_marginLeft="20dp"
@@ -124,9 +129,11 @@
 
         <!--Setting-->
         <LinearLayout
+            android:id="@+id/llSetting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:clickable="true">
 
             <ImageView
                 android:layout_marginLeft="20dp"
@@ -148,12 +155,13 @@
         android:id="@+id/endSessionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="End session"
-        android:drawableLeft="@drawable/ic_logout_small"
         android:layout_gravity="bottom|center_horizontal"
-        android:textSize="20dp"
-        android:textColor="#FF0000"
         android:layout_marginTop="30dp"
-        android:backgroundTint="@color/white" />
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/ic_logout_small"
+        android:text="End session"
+        android:textColor="#FF0000"
+        android:textSize="20dp"
+        app:iconPadding="3dp" />
 
 </LinearLayout>
