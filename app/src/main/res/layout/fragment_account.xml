@@ -34,14 +34,15 @@
     <LinearLayout
         android:id="@+id/options_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp">
 
-
+        <!--Personal Information-->
         <LinearLayout
+            android:id="@+id/llPersonal_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -54,13 +55,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Personal Information"
+                android:text="Personal information"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 android:gravity="center_vertical"/>
         </LinearLayout>
 
+        <!--Payment and cards-->
         <LinearLayout
+            android:id="@+id/llPayment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -69,7 +72,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_person_small" />
+                android:src="@drawable/ic_payment_small" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -79,6 +82,78 @@
                 android:gravity="center_vertical"/>
         </LinearLayout>
 
+        <!--Saved-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginLeft="20dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_heart_small" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Saved"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+
+        <!--Booking history-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginLeft="20dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_history_small" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Booking history"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+
+        <!--Setting-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginLeft="20dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_setting_small" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Settings"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/endSessionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End session"
+        android:drawableLeft="@drawable/ic_logout_small"
+        android:layout_gravity="bottom|center_horizontal"
+        android:textSize="20dp"
+        android:textColor="#FF0000"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/white" />
 
 </LinearLayout>

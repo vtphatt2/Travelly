@@ -21,7 +21,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,17 +37,11 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = null;
-
                 if (item.getItemId() == R.id.menu_home) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Home.newInstance()).commit();
                 }
                 else if (item.getItemId() == R.id.menu_account) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Account.newInstance()).commit();
-                }
-
-                if (selectedFragment != null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Home.newInstance()).commit();
                 }
                 return true;
             }
