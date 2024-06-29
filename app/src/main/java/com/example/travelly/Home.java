@@ -1,5 +1,6 @@
 package com.example.travelly;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -62,6 +63,8 @@ public class Home extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("Success", "llTransport : On click");
+                Intent intent = new Intent(requireContext(), TransportBooking.class);
+                startActivity(intent);
             }
         });
 
