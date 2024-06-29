@@ -1,5 +1,6 @@
 package com.example.travelly;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -57,6 +58,7 @@ public class EditInformation extends Fragment {
                 account.setLastName(tvLastName.getText().toString());
                 account.setPhone(tvPhone.getText().toString());
                 account.setEmail(tvEmail.getText().toString());
+                passData(account);
             }
         });
 
@@ -75,5 +77,21 @@ public class EditInformation extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        dataPasser = (OnDataPass) context;
+    }
+
+    // pass data to Main Activity
+    public interface OnDataPass {
+        void onDataPass(PersonalInfo data);
+    }
+    private OnDataPass dataPasser;
+
+    public void passData(PersonalInfo data) {
+        dataPasser.onDataPass(data);
     }
 }

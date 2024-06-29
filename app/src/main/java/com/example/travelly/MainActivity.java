@@ -18,9 +18,9 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EditInformation.OnDataPass {
     private BottomNavigationView bottomNavigationView;
-    private PersonalInfo account = new PersonalInfo("Vo", "Thinh Phat", "+84 769 310 566", "thinhphat544@gmail.co");
+    private PersonalInfo account = new PersonalInfo("Vo", "Thinh Phat", "+84 769 310 566", "thinhphat544@gmail.com");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +47,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onDataPass(PersonalInfo data) {
+        account = data;
     }
 }
