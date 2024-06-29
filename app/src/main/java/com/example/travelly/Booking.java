@@ -2,6 +2,7 @@ package com.example.travelly;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -42,11 +43,26 @@ public class Booking extends Fragment {
         itemList.add(new BookingItem("Trips", R.drawable.trips_booking));
         itemList.add(new BookingItem("Hotel", R.drawable.hotel_booking));
         itemList.add(new BookingItem("Transport", R.drawable.transport_booking));
-        itemList.add(new BookingItem("Event", R.drawable.event_booking));
+        itemList.add(new BookingItem("Events", R.drawable.event_booking));
 
-        customAdapter = new BookingItemAdapter(requireActivity(), itemList);
+        customAdapter = new BookingItemAdapter(requireActivity(), itemList, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = (int) v.getTag();
+                BookingItem item = itemList.get(position);
+                showDialog(item.getTitle());
+            }
+        });
         listView.setAdapter(customAdapter);
 
         return view;
+    }
+
+    private void showDialog(String title) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setTitle(title);
+        builder.setMessage(title + " services are not available now.");
+        builder.setPositiveButton("OK", null);
+        builder.show();
     }
 }

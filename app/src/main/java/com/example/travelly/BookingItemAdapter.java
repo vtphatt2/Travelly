@@ -13,10 +13,12 @@ import java.util.List;
 public class BookingItemAdapter extends BaseAdapter {
     private Context context;
     private List<BookingItem> itemList;
+    private View.OnClickListener onItemClickListener;
 
-    public BookingItemAdapter(Context context, List<BookingItem> itemList) {
+    public BookingItemAdapter(Context context, List<BookingItem> itemList, View.OnClickListener onItemClickListener) {
         this.context = context;
         this.itemList = itemList;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -47,6 +49,9 @@ public class BookingItemAdapter extends BaseAdapter {
 
         textView.setText(item.getTitle());
         imageView.setImageResource(item.getImageResId());
+
+        convertView.setTag(position);
+        convertView.setOnClickListener(onItemClickListener);
 
         return convertView;
     }
