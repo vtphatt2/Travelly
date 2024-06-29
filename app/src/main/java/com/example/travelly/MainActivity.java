@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements EditInformation.O
                 if (item.getItemId() == R.id.menu_home) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Home.newInstance()).commit();
                 }
+                else if (item.getItemId() == R.id.menu_booking) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Booking.newInstance()).commit();
+                }
                 else if (item.getItemId() == R.id.menu_account) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, Account.newInstance(account)).commit();
                 }
