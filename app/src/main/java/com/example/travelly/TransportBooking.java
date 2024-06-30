@@ -2,16 +2,19 @@ package com.example.travelly;
 
 import android.app.DatePickerDialog;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,6 +26,7 @@ public class TransportBooking extends AppCompatActivity {
     ImageButton btnBack, btnSwap;
     Spinner spnFromCity, spnToCity;
     TextView tvDeparture, tvReturn, tvEconomy, tvBusiness;
+    ImageView ivPlane, ivBoat, ivTrain, ivBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +104,32 @@ public class TransportBooking extends AppCompatActivity {
             }
         });
 
+        ivPlane = findViewById(R.id.imageViewPlane);
+        ivBoat = findViewById(R.id.imageViewBoat);
+        ivTrain = findViewById(R.id.imageViewTrain);
+        ivBus = findViewById(R.id.imageViewBus);
+
+        ivBoat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("Boat");
+            }
+        });
+
+        ivTrain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("Train");
+            }
+        });
+
+        ivBus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("Bus");
+            }
+        });
+
     }
 
     private void showDatePickerDialog(TextView tv) {
@@ -121,5 +151,12 @@ public class TransportBooking extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    private void showDialog(String title) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(title + " booking service is not available now.");
+        builder.setPositiveButton("OK", null);
+        builder.show();
+    }
 
 }
