@@ -2,4 +2,56 @@
     <string name="app_name">Travelly</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="options_array_City">
+        <item>Amsterdam (AMS)</item>
+        <item>Athens (ATH)</item>
+        <item>Atlanta (ATL)</item>
+        <item>Auckland (AKL)</item>
+        <item>Bangkok (BKK)</item>
+        <item>Barcelona (BCN)</item>
+        <item>Beijing (PEK)</item>
+        <item>Berlin (BER)</item>
+        <item>Boston (BOS)</item>
+        <item>Buenos Aires (EZE)</item>
+        <item>Budapest (BUD)</item>
+        <item>Cairo (CAI)</item>
+        <item>Calgary (YYC)</item>
+        <item>Chicago (ORD)</item>
+        <item>Dallas (DFW)</item>
+        <item>Delhi (DEL)</item>
+        <item>Dubai (DXB)</item>
+        <item>Frankfurt (FRA)</item>
+        <item>Hong Kong (HKG)</item>
+        <item>Istanbul (IST)</item>
+        <item>Jakarta (CGK)</item>
+        <item>Johannesburg (JNB)</item>
+        <item>Kuala Lumpur (KUL)</item>
+        <item>Las Vegas (LAS)</item>
+        <item>London (LDN)</item>
+        <item>Los Angeles (LAX)</item>
+        <item>Madrid (MAD)</item>
+        <item>Miami (MIA)</item>
+        <item>Milan (MXP)</item>
+        <item>Mexico City (MEX)</item>
+        <item>Moscow (DME)</item>
+        <item>Mumbai (BOM)</item>
+        <item>New York (NYC)</item>
+        <item>Paris (PAR)</item>
+        <item>Prague (PRG)</item>
+        <item>Rio de Janeiro (GIG)</item>
+        <item>Rome (FCO)</item>
+        <item>Saint Petersburg (LED)</item>
+        <item>San Francisco (SFO)</item>
+        <item>São Paulo (GRU)</item>
+        <item>Seattle (SEA)</item>
+        <item>Seoul (ICN)</item>
+        <item>Shanghai (PVG)</item>
+        <item>Singapore (SIN)</item>
+        <item>Toronto (YYZ)</item>
+        <item>Tokyo (TYO)</item>
+        <item>Vancouver (YVR)</item>
+        <item>Vienna (VIE)</item>
+        <item>Warsaw (WAW)</item>
+        <item>Washington D.C. (DCA)</item>
+    </string-array>
 </resources>

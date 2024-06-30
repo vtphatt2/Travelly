@@ -21,7 +21,243 @@
         android:text="Transport Booking"
         android:textSize="25dp"
         android:textStyle="bold"
-
         android:gravity="center_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From"
+            android:textStyle="bold"
+            android:textSize="15sp">
+        </TextView>
+
+        <Spinner
+            android:id="@+id/spinnerFromCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/buttonSwap"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_swap"
+        android:scaleType="fitCenter"
+        android:layout_gravity="right"
+        android:background="@color/white"
+        android:layout_marginRight="50dp"
+        android:clickable="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To"
+            android:textStyle="bold"
+            android:textSize="15sp">
+        </TextView>
+
+        <Spinner
+            android:id="@+id/spinnerToCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Departure"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/textViewDepartureDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00/00/0000"
+            android:textSize="18sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:clickable="true">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Return"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="15dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/textViewReturnDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00/00/0000"
+            android:textSize="18sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:clickable="true">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Passenger and Luggage"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginLeft="15dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_person_small"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                app:tint="@color/green_500" />
+
+            <EditText
+                android:id="@+id/editTextNbPerson"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_child"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                app:tint="@color/green_500"
+                android:layout_marginLeft="10dp"/>
+
+            <EditText
+                android:id="@+id/editTextNbChildren"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_pet"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                app:tint="@color/green_500"
+                android:layout_marginLeft="10dp"/>
+
+            <EditText
+                android:id="@+id/editTextNbPet"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_luggage"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                app:tint="@color/green_500"
+                android:layout_marginLeft="10dp"/>
+
+            <EditText
+                android:id="@+id/editTextNbLuggage"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Class"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:layout_marginLeft="15dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/textViewEconomy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:background="@color/green_500"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Economy"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textViewBusiness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:background="@color/white"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Business"
+                android:textColor="@color/green_500"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

@@ -2,4 +2,36 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Green -->
+    <color name="green_700">#01635D</color>
+    <color name="green_500">#089083</color>
+    <color name="green_50">#B7DFDB</color>
+
+    <!-- Peach -->
+    <color name="peach_300">#FEA36B</color>
+    <color name="peach_50">#FFDDA2</color>
+
+    <!-- Alerts -->
+    <color name="alert_links">#3EAEFF</color>
+    <color name="alert_success">#09C933</color>
+    <color name="alert_warning">#FF941C</color>
+    <color name="alert_error">#FF3636</color>
+
+    <!-- Text -->
+    <color name="text_primary">#050505</color>
+    <color name="text_secondary">#727272</color>
+    <color name="text_white">#FFFFFF</color>
+
+    <!-- Background -->
+    <color name="background_white">#FFFFFF</color>
+    <color name="background_screen">#FAFAFA</color>
+    <color name="background_element">#FFFFFF</color>
+
+    <!-- UI Element -->
+    <color name="ui_element_dark">#050505</color>
+    <color name="ui_element_dark_30">#505050</color>
+    <color name="ui_element_gray">#727272</color>
+    <color name="ui_element_light">#FFFFFF</color>
+    <color name="ui_element_light_30">#FFFFFF</color>
 </resources>
