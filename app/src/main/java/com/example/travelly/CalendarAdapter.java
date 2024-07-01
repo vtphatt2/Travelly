@@ -16,10 +16,16 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     private List<Date> dateList;
     private int selectedPosition = 0;
     private Context context;
+    private OnItemClickListener onItemClickListener;
 
-    public CalendarAdapter(List<Date> dateList, Context context) {
+    public CalendarAdapter(List<Date> dateList, Context context, OnItemClickListener onItemClickListener) {
         this.dateList = dateList;
         this.context = context;
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Date date);
     }
 
     @NonNull
@@ -31,7 +37,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
-//        holder.numberText.setText(String.valueOf(numberList.get(position)));
+        Date date = dateList.get(position);
         holder.tvDayOfWeek.setText(dateList.get(position).getDayOfWeek());
         holder.tvDay.setText(dateList.get(position).getDay());
 
@@ -44,6 +50,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         holder.llDate.setOnClickListener(v -> {
             selectedPosition = holder.getAdapterPosition();
             notifyDataSetChanged();
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(date);
+            }
         });
     }
 
