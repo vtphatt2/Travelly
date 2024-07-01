@@ -1,6 +1,7 @@
 package com.example.travelly;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class TransportBooking extends AppCompatActivity {
     Spinner spnFromCity, spnToCity;
     TextView tvDeparture, tvReturn, tvEconomy, tvBusiness;
     ImageView ivPlane, ivBoat, ivTrain, ivBus;
+    Button btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +129,15 @@ public class TransportBooking extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDialog("Bus");
+            }
+        });
+
+        btnSearch = findViewById(R.id.buttonSearch);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TransportBooking.this, Flights.class);
+                startActivity(intent);
             }
         });
 
