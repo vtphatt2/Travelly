@@ -8,4 +8,12 @@ public class Date {
         this.dayOfWeek = dayOfWeek;
         this.day = day;
     }
+
+    String getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    String getDay() {
+        return Integer.toString(day);
+    }
 }

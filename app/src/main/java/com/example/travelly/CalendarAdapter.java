@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,33 +12,36 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.NumberViewHolder> {
-    private List<Integer> numberList;
-    private int selectedPosition = -1;
+public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
+    private List<Date> dateList;
+    private int selectedPosition = 0;
     private Context context;
 
-    public CalendarAdapter(List<Integer> numberList, Context context) {
-        this.numberList = numberList;
+    public CalendarAdapter(List<Date> dateList, Context context) {
+        this.dateList = dateList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public NumberViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_calendar, parent, false);
-        return new NumberViewHolder(view);
+        return new CalendarViewHolder (view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NumberViewHolder holder, int position) {
-        holder.numberText.setText(String.valueOf(numberList.get(position)));
+    public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
+//        holder.numberText.setText(String.valueOf(numberList.get(position)));
+        holder.tvDayOfWeek.setText(dateList.get(position).getDayOfWeek());
+        holder.tvDay.setText(dateList.get(position).getDay());
+
         if (selectedPosition == position) {
-            holder.numberText.setBackgroundColor(context.getResources().getColor(android.R.color.holo_blue_light));
+            holder.llDate.setBackgroundColor(context.getResources().getColor(R.color.peach_50));
         } else {
-            holder.numberText.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+            holder.llDate.setBackgroundColor(context.getResources().getColor(android.R.color.white));
         }
 
-        holder.numberText.setOnClickListener(v -> {
+        holder.llDate.setOnClickListener(v -> {
             selectedPosition = holder.getAdapterPosition();
             notifyDataSetChanged();
         });
@@ -45,15 +49,18 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Number
 
     @Override
     public int getItemCount() {
-        return numberList.size();
+        return dateList.size();
     }
 
-    public static class NumberViewHolder extends RecyclerView.ViewHolder {
-        TextView numberText;
+    public static class CalendarViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout llDate;
+        TextView tvDay, tvDayOfWeek;
 
-        public NumberViewHolder(@NonNull View itemView) {
+        public CalendarViewHolder(@NonNull View itemView) {
             super(itemView);
-            numberText = itemView.findViewById(R.id.number_text);
+            llDate = itemView.findViewById(R.id.llDate);
+            tvDay = llDate.findViewById(R.id.textViewDay);
+            tvDayOfWeek = llDate.findViewById(R.id.textViewDayOfWeek);
         }
     }
 }

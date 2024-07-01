@@ -12,8 +12,13 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Flights extends AppCompatActivity {
     ImageButton btnBack;
@@ -21,6 +26,7 @@ public class Flights extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidThreeTen.init(this);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_flights);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -37,16 +43,26 @@ public class Flights extends AppCompatActivity {
             }
         });
 
-
         RecyclerView recyclerView = findViewById(R.id.recyclerViewCalendar);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        List<Integer> numberList = new ArrayList<>();
-        for (int i = 1; i <= 100; i++) {
-            numberList.add(i);
+        List<Date> dateList = getAroundCurrentDate();
+
+        CalendarAdapter adapter = new CalendarAdapter(dateList, this);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private List<Date> getAroundCurrentDate() {
+        List<Date> dates = new ArrayList<>();
+        LocalDate currentDate = LocalDate.now();
+
+        for (int i = 0; i < 30; i++) {
+            LocalDate date = currentDate.plusDays(i);
+            String dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
+            int day = date.getDayOfMonth();
+            dates.add(new Date(dayOfWeek, day));
         }
 
-        CalendarAdapter adapter = new CalendarAdapter(numberList, this);
-        recyclerView.setAdapter(adapter);
+        return dates;
     }
 }
