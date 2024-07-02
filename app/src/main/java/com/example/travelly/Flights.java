@@ -1,5 +1,6 @@
 package com.example.travelly;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelly.Database.FlightInfo;
+import com.example.travelly.Database.FlightsDatabaseHandler;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import org.threeten.bp.LocalDate;
@@ -26,6 +28,7 @@ public class Flights extends AppCompatActivity {
     ImageButton btnBack;
     Date dateSelected;
     RecyclerView recyclerViewCalendar, recyclerViewTicket;
+    FlightsDatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,8 @@ public class Flights extends AppCompatActivity {
 
         List<Date> dateList = getAroundCurrentDate();
         List<FlightInfo> flightInfoList = getFlightInfoFromDatabase();
+//        List<FlightInfo> flightInfoList = new ArrayList<>();
+//        flightInfoList.add(new FlightInfo(1, "New York (NYC)", "London (LDN)", 2, 7, 2024, "9:00 AM", 50, "TT-190"));
 
         CalendarAdapter adapterCalendar = new CalendarAdapter(dateList, this, date -> {
             dateSelected = date;
@@ -68,6 +73,9 @@ public class Flights extends AppCompatActivity {
     private List<FlightInfo> getFlightInfoFromDatabase() {
         List<FlightInfo> flightInfoList = new ArrayList<>();
 
+        db = new FlightsDatabaseHandler(this);
+        Cursor res = db.getAllFlights();
+
         return flightInfoList;
     }
 
@@ -79,9 +87,10 @@ public class Flights extends AppCompatActivity {
             LocalDate date = currentDate.plusDays(i);
             String dayOfWeek = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
             int day = date.getDayOfMonth();
-            dates.add(new Date(dayOfWeek, day));
+            int month = date.getMonthValue();
+            int year = date.getYear();
+            dates.add(new Date(dayOfWeek, day, month, year));
         }
-
         return dates;
     }
 }

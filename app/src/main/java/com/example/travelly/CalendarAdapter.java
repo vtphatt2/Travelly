@@ -39,7 +39,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         Date date = dateList.get(position);
         holder.tvDayOfWeek.setText(dateList.get(position).getDayOfWeek());
-        holder.tvDay.setText(dateList.get(position).getDay());
+        holder.tvDay.setText(String.valueOf(dateList.get(position).getDay()));
 
         if (selectedPosition == position) {
             holder.llDate.setBackgroundColor(context.getResources().getColor(R.color.peach_50));

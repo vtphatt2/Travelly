@@ -6,16 +6,20 @@ public class FlightInfo {
     private int id;
     private String departureCity;
     private String arrivalCity;
-    private Date date;
+    private int day;
+    private int month;
+    private int year;
     private String departureTime;
     private float price;
     private String number;
 
-    public FlightInfo(int id, String departureCity, String arrivalCity, Date date, String departureTime, float price, String number) {
+    public FlightInfo(int id, String departureCity, String arrivalCity, int day, int month, int year, String departureTime, float price, String number) {
         this.id = id;
         this.departureCity = departureCity;
         this.arrivalCity = arrivalCity;
-        this.date = date; // Consider creating a copy for immutability (see previous explanation)
+        this.day = day;
+        this.month = month;
+        this.year = year;
         this.departureTime = departureTime;
         this.price = price;
         this.number = number;
@@ -35,7 +39,7 @@ public class FlightInfo {
     }
 
     public String getDate() {
-        return date.getDate();
+        return String.valueOf(day) + "/" + String.valueOf(month) + "/" + String.valueOf(year);
     }
 
     public String getDepartureTime() {
@@ -61,10 +65,6 @@ public class FlightInfo {
 
     public void setArrivalCity(String arrivalCity) {
         this.arrivalCity = arrivalCity;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public void setDepartureTime(String departureTime) {
