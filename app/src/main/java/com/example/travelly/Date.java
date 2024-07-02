@@ -16,4 +16,8 @@ public class Date {
     String getDay() {
         return Integer.toString(day);
     }
+
+    public String getDate() {
+        return String.valueOf(day) + " " + dayOfWeek;
+    }
 }

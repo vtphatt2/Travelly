@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.travelly.Database.FlightInfo;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import org.threeten.bp.LocalDate;
@@ -24,6 +25,7 @@ import java.util.Locale;
 public class Flights extends AppCompatActivity {
     ImageButton btnBack;
     Date dateSelected;
+    RecyclerView recyclerViewCalendar, recyclerViewTicket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +47,28 @@ public class Flights extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewCalendar);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewCalendar = findViewById(R.id.recyclerViewCalendar);
+        recyclerViewTicket = findViewById(R.id.recyclerViewTicket);
+
+        recyclerViewCalendar.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewTicket.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         List<Date> dateList = getAroundCurrentDate();
+        List<FlightInfo> flightInfoList = getFlightInfoFromDatabase();
 
-        CalendarAdapter adapter = new CalendarAdapter(dateList, this, date -> {
+        CalendarAdapter adapterCalendar = new CalendarAdapter(dateList, this, date -> {
             dateSelected = date;
         });
-        recyclerView.setAdapter(adapter);
+        TicketItemAdapter adapterTicket = new TicketItemAdapter(flightInfoList, this);
+
+        recyclerViewCalendar.setAdapter(adapterCalendar);
+        recyclerViewTicket.setAdapter(adapterTicket);
+    }
+
+    private List<FlightInfo> getFlightInfoFromDatabase() {
+        List<FlightInfo> flightInfoList = new ArrayList<>();
+
+        return flightInfoList;
     }
 
     private List<Date> getAroundCurrentDate() {

@@ -1,0 +1,62 @@
+package com.example.travelly;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.travelly.Database.FlightInfo;
+
+import java.util.List;
+
+public class TicketItemAdapter extends RecyclerView.Adapter<TicketItemAdapter.TicketItemViewHolder> {
+    private List<FlightInfo> flightInfoList;
+    private Context context;
+
+    public TicketItemAdapter(List<FlightInfo> flightInfoList, Context context) {
+        this.flightInfoList = flightInfoList;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public TicketItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ticket, parent, false);
+        return new TicketItemViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(TicketItemAdapter.TicketItemViewHolder holder, int position) {
+        FlightInfo flightInfo = flightInfoList.get(position);
+        holder.tvDepartureCity.setText(flightInfo.getDepartureCity());
+        holder.tvArrivalCity.setText(flightInfo.getArrivalCity());
+        holder.tvDepartureDate.setText(flightInfo.getDate());
+        holder.tvDepartureTime.setText(flightInfo.getDepartureTime());
+        holder.tvPrice.setText("$" + String.valueOf(flightInfo.getPrice()));
+        holder.tvNumber.setText(flightInfo.getNumber());
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return flightInfoList.size();
+    }
+
+    public static class TicketItemViewHolder extends RecyclerView.ViewHolder {
+        TextView tvDepartureCity, tvArrivalCity, tvDepartureDate, tvDepartureTime, tvPrice, tvNumber;
+
+        public TicketItemViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvDepartureCity = itemView.findViewById(R.id.textViewDepartureCity);
+            tvArrivalCity = itemView.findViewById(R.id.textViewArrivalCity);
+            tvDepartureDate = itemView.findViewById(R.id.textViewDepartureDate);
+            tvDepartureTime = itemView.findViewById(R.id.textViewDepartureTime);
+            tvPrice = itemView.findViewById(R.id.textViewPrice);
+            tvNumber = itemView.findViewById(R.id.textViewNumber);
+        }
+    }
+}
