@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FlightsDatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "flights.db";
     private static final int DATABASE_VERSION = 1;
@@ -74,6 +77,37 @@ public class FlightsDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_FLIGHTS, null);
     }
+
+    public Cursor getFlightsByDateAndCities(Integer flightDay, Integer flightMonth, Integer flightYear, String departureCity, String arrivalCity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        StringBuilder queryBuilder = new StringBuilder("SELECT * FROM " + TABLE_FLIGHTS + " WHERE 1=1");
+        List<String> selectionArgsList = new ArrayList<>();
+
+        if (flightDay != null) {
+            queryBuilder.append(" AND ").append(COL_FLIGHT_DAY).append(" = ?");
+            selectionArgsList.add(String.valueOf(flightDay));
+        }
+        if (flightMonth != null) {
+            queryBuilder.append(" AND ").append(COL_FLIGHT_MONTH).append(" = ?");
+            selectionArgsList.add(String.valueOf(flightMonth));
+        }
+        if (flightYear != null) {
+            queryBuilder.append(" AND ").append(COL_FLIGHT_YEAR).append(" = ?");
+            selectionArgsList.add(String.valueOf(flightYear));
+        }
+        if (departureCity != null) {
+            queryBuilder.append(" AND ").append(COL_DEPARTURE_CITY).append(" = ?");
+            selectionArgsList.add(departureCity);
+        }
+        if (arrivalCity != null) {
+            queryBuilder.append(" AND ").append(COL_ARRIVAL_CITY).append(" = ?");
+            selectionArgsList.add(arrivalCity);
+        }
+
+        String[] selectionArgs = selectionArgsList.toArray(new String[0]);
+        return db.rawQuery(queryBuilder.toString(), selectionArgs);
+    }
+
 
     public boolean updateFlight(int flightId, String departureCity, String arrivalCity, int flightDay, int flightMonth, int flightYear, String departureTime, double ticketPrice, String flightNumber) {
         SQLiteDatabase db = this.getWritableDatabase();

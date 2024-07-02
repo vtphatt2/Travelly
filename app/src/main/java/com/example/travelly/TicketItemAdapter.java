@@ -59,4 +59,9 @@ public class TicketItemAdapter extends RecyclerView.Adapter<TicketItemAdapter.Ti
             tvNumber = itemView.findViewById(R.id.textViewNumber);
         }
     }
+
+    public void updateData(List<FlightInfo> newDataList) {
+        this.flightInfoList = newDataList;
+        notifyDataSetChanged();
+    }
 }

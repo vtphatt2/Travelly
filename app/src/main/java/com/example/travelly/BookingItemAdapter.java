@@ -55,5 +55,4 @@ public class BookingItemAdapter extends BaseAdapter {
 
         return convertView;
     }
-
 }
