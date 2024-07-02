@@ -2,6 +2,7 @@ package com.example.travelly;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -74,8 +75,45 @@ public class Flights extends AppCompatActivity {
         List<FlightInfo> flightInfoList = new ArrayList<>();
 
         db = new FlightsDatabaseHandler(this);
+        db.clearAllRecords();
+        db.insertSampleData();
         Cursor res = db.getAllFlights();
 
+        if (res.moveToFirst()) {
+            do {
+                int idIndex = res.getColumnIndex(FlightsDatabaseHandler.COL_ID_FLIGHTS);
+                int departureCityIndex = res.getColumnIndex(FlightsDatabaseHandler.COL_DEPARTURE_CITY);
+                int arrivalCityIndex = res.getColumnIndex(FlightsDatabaseHandler.COL_ARRIVAL_CITY);
+                int dayIndex = res.getColumnIndex(FlightsDatabaseHandler.COL_FLIGHT_DAY);
+                int monthIndex = res.getColumnIndex(FlightsDatabaseHandler.COL_FLIGHT_MONTH);
+                int yearIndex = res.getColumnIndex(FlightsDatabaseHandler.COL_FLIGHT_YEAR);
+                int departureTimeIndex = res.getColumnIndex(FlightsDatabaseHandler.COL_DEPARTURE_TIME);
+                int priceIndex = res.getColumnIndex(FlightsDatabaseHandler.COL_PRICE);
+                int numberIndex = res.getColumnIndex(FlightsDatabaseHandler.COL_FLIGHT_NUMBER);
+
+                if (idIndex >= 0 && departureCityIndex >= 0 && arrivalCityIndex >= 0 && dayIndex >= 0 && monthIndex >= 0 &&
+                        yearIndex >= 0 && departureTimeIndex >= 0 && priceIndex >= 0 && numberIndex >= 0) {
+
+                    int id = res.getInt(idIndex);
+                    String departureCity = res.getString(departureCityIndex);
+                    String arrivalCity = res.getString(arrivalCityIndex);
+                    int day = res.getInt(dayIndex);
+                    int month = res.getInt(monthIndex);
+                    int year = res.getInt(yearIndex);
+                    String departureTime = res.getString(departureTimeIndex);
+                    float price = res.getFloat(priceIndex);
+                    String number = res.getString(numberIndex);
+
+                    FlightInfo flight = new FlightInfo(id, departureCity, arrivalCity, day, month, year, departureTime, price, number);
+                    flightInfoList.add(flight);
+
+                    Log.d("FlightInfo", "ID: " + res.getInt(idIndex) + ", DepartureCity: " + res.getString(departureCityIndex));
+                }
+            } while (res.moveToNext());
+        }
+
+        res.close();
+        db.close();
         return flightInfoList;
     }
 

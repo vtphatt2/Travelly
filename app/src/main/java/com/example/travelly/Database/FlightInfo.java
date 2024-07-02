@@ -1,7 +1,5 @@
 package com.example.travelly.Database;
 
-import com.example.travelly.Date;
-
 public class FlightInfo {
     private int id;
     private String departureCity;
