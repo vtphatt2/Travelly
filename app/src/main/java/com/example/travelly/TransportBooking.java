@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -29,6 +30,7 @@ public class TransportBooking extends AppCompatActivity {
     TextView tvDeparture, tvReturn, tvEconomy, tvBusiness;
     ImageView ivPlane, ivBoat, ivTrain, ivBus;
     Button btnSearch;
+    String departureCity, arrivalCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,29 @@ public class TransportBooking extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnFromCity.setAdapter(adapter);
         spnToCity.setAdapter(adapter);
+
+        spnFromCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                departureCity = parent.getItemAtPosition(position).toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+
+        spnToCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                arrivalCity = parent.getItemAtPosition(position).toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+
 
         btnSwap = findViewById(R.id.buttonSwap);
         btnSwap.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +162,8 @@ public class TransportBooking extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TransportBooking.this, Flights.class);
+                intent.putExtra("DEPARTURE_CITY", departureCity);
+                intent.putExtra("ARRIVAL_CITY", arrivalCity);
                 startActivity(intent);
             }
         });

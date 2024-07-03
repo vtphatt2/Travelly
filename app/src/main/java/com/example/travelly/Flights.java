@@ -1,5 +1,6 @@
 package com.example.travelly;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,10 +27,13 @@ import java.util.List;
 import java.util.Locale;
 
 public class Flights extends AppCompatActivity {
-    ImageButton btnBack;
-    Date dateSelected;
-    RecyclerView recyclerViewCalendar, recyclerViewTicket;
-    FlightsDatabaseHandler db;
+    private ImageButton btnBack;
+    private Date dateSelected;
+    private RecyclerView recyclerViewCalendar, recyclerViewTicket;
+    private TextView tvAnnounce;
+    private FlightsDatabaseHandler db;
+    private String departureCity, arrivalCity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,19 +61,25 @@ public class Flights extends AppCompatActivity {
         recyclerViewCalendar.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewTicket.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
+        Intent intent = getIntent();
+        departureCity = intent.getStringExtra("DEPARTURE_CITY");
+        arrivalCity = intent.getStringExtra("ARRIVAL_CITY");
+
         List<Date> dateList = getAroundCurrentDate();
         List<FlightInfo> flightInfoList = getFlightInfoFromDatabase();
-        flightInfoList = getFlightsByDateAndCities(dateList.get(0).getDay(), dateList.get(0).getMonth(), dateList.get(0).getYear(), null, null);
+        flightInfoList = getFlightsByDateAndCities(dateList.get(0).getDay(), dateList.get(0).getMonth(), dateList.get(0).getYear(), departureCity, arrivalCity);
 
         TicketItemAdapter adapterTicket = new TicketItemAdapter(flightInfoList, this);
         CalendarAdapter adapterCalendar = new CalendarAdapter(dateList, this, date -> {
             dateSelected = date;
-            adapterTicket.updateData(getFlightsByDateAndCities(dateSelected.getDay(), dateSelected.getMonth(), dateSelected.getYear(), null, null));
+            adapterTicket.updateData(getFlightsByDateAndCities(dateSelected.getDay(), dateSelected.getMonth(), dateSelected.getYear(), departureCity, arrivalCity));
         });
-
 
         recyclerViewCalendar.setAdapter(adapterCalendar);
         recyclerViewTicket.setAdapter(adapterTicket);
+
+        tvAnnounce = findViewById(R.id.textViewAnnounce);
+        tvAnnounce.setText(String.valueOf(flightInfoList.size()) + " flights available " + extractCityName(departureCity) + " to " + extractCityName(arrivalCity));
     }
 
     private List<FlightInfo> getFlightsByDateAndCities(int flightDay, int flightMonth, int flightYear, String departureCity, String arrivalCity) {
@@ -174,5 +184,9 @@ public class Flights extends AppCompatActivity {
             dates.add(new Date(dayOfWeek, day, month, year));
         }
         return dates;
+    }
+
+    private String extractCityName(String input) {
+        return input.replaceAll("\\s*\\(.*?\\)", "").trim();
     }
 }

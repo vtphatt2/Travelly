@@ -35,12 +35,13 @@
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/textViewFlights" />
 
-<!--    <FrameLayout-->
-<!--        android:id="@+id/flightTicket"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="400dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/recyclerViewCalendar"-->
-<!--        android:layout_margin="8dp" />-->
+    <TextView
+        android:id="@+id/textViewAnnounce"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="7 flights available New York to London"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewCalendar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTicket"
@@ -48,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewCalendar" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAnnounce" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
