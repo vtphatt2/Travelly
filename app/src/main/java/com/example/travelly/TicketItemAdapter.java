@@ -1,12 +1,15 @@
 package com.example.travelly;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelly.Database.FlightInfo;
@@ -18,8 +21,8 @@ public class TicketItemAdapter extends RecyclerView.Adapter<TicketItemAdapter.Ti
     private Context context;
 
     public TicketItemAdapter(List<FlightInfo> flightInfoList, Context context) {
-        this.flightInfoList = flightInfoList;
         this.context = context;
+        this.flightInfoList = flightInfoList;
     }
 
     @NonNull
@@ -38,8 +41,12 @@ public class TicketItemAdapter extends RecyclerView.Adapter<TicketItemAdapter.Ti
         holder.tvDepartureTime.setText(flightInfo.getDepartureTime());
         holder.tvPrice.setText("$" + String.valueOf(flightInfo.getPrice()));
         holder.tvNumber.setText(flightInfo.getNumber());
-    }
 
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, Seats.class);
+            context.startActivity(intent);
+        });
+    }
 
     @Override
     public int getItemCount() {
@@ -58,6 +65,7 @@ public class TicketItemAdapter extends RecyclerView.Adapter<TicketItemAdapter.Ti
             tvPrice = itemView.findViewById(R.id.textViewPrice);
             tvNumber = itemView.findViewById(R.id.textViewNumber);
         }
+
     }
 
     public void updateData(List<FlightInfo> newDataList) {

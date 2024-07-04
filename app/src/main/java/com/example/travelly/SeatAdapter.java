@@ -10,17 +10,25 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class SeatAdapter extends BaseAdapter {
     private Context context;
     private List<Integer> data;
-    private LayoutInflater inflater;
+    private Set<Integer> bookedSeats;
+    private OnButtonClickListener listener;
 
-    SeatAdapter(Context context, List<Integer> data) {
+    SeatAdapter(Context context, List<Integer> data, OnButtonClickListener listener) {
         this.context = context;
         this.data = data;
-        this.inflater = LayoutInflater.from(context);
+        this.bookedSeats = new HashSet<>();
+        this.listener = listener;
+        populateBookedSeats();
     }
 
     @Override
@@ -41,7 +49,7 @@ public class SeatAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.activity_seats, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_seat, parent, false);
         }
 
         Button btnSeat1 = convertView.findViewById(R.id.seat1);
@@ -51,11 +59,83 @@ public class SeatAdapter extends BaseAdapter {
         TextView tvSeatRow = convertView.findViewById(R.id.textViewSeatRow);
         tvSeatRow.setText(String.valueOf(data.get(position)));
 
-        btnSeat1.setOnClickListener(v -> btnSeat1.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF0000"))));
-        btnSeat2.setOnClickListener(v -> btnSeat2.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF0000"))));
-        btnSeat3.setOnClickListener(v -> btnSeat3.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF0000"))));
-        btnSeat4.setOnClickListener(v -> btnSeat4.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF0000"))));
+        int seat1Position = position * 4;
+        int seat2Position = seat1Position + 1;
+        int seat3Position = seat1Position + 2;
+        int seat4Position = seat1Position + 3;
+        setSeatColor(btnSeat1, seat1Position);
+        setSeatColor(btnSeat2, seat2Position);
+        setSeatColor(btnSeat3, seat3Position);
+        setSeatColor(btnSeat4, seat4Position);
+
+        btnSeat1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onButtonClick(position, 1, toggleSeatColor(btnSeat1));
+            }
+        });
+
+        btnSeat2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onButtonClick(position, 2, toggleSeatColor(btnSeat2));
+            }
+        });
+
+        btnSeat3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onButtonClick(position, 3, toggleSeatColor(btnSeat3));
+
+            }
+        });
+
+        btnSeat4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onButtonClick(position, 4, toggleSeatColor(btnSeat4));
+            }
+        });
 
         return convertView;
+    }
+
+    public interface OnButtonClickListener {
+        void onButtonClick(int position, int buttonId, boolean toggle);
+    }
+
+    private void populateBookedSeats() {
+        Random random = new Random();
+        int n = data.size();
+        int numberOfBookedSeats = random.nextInt(n/4 + 1) + 5;
+        while (bookedSeats.size() < numberOfBookedSeats) {
+            bookedSeats.add(random.nextInt(n * 4));
+        }
+    }
+
+    private void setSeatColor(Button button, int position) {
+        if (bookedSeats.contains(position)) {
+            button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green_700)));
+        } else {
+            button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green_50)));
+        }
+    }
+
+    private boolean toggleSeatColor(Button button) {
+        int green50 = ContextCompat.getColor(context, R.color.green_50);
+        int peach300 = ContextCompat.getColor(context, R.color.peach_300);
+
+        ColorStateList colorStateList = button.getBackgroundTintList();
+        if (colorStateList != null) {
+            int currentColor = colorStateList.getDefaultColor();
+            if (currentColor == green50) {
+                button.setBackgroundTintList(ColorStateList.valueOf(peach300));
+                return true;
+            }
+            else if (currentColor == peach300) {
+                button.setBackgroundTintList(ColorStateList.valueOf(green50));
+            }
+        }
+        return false;
     }
 }

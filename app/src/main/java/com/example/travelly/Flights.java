@@ -69,7 +69,7 @@ public class Flights extends AppCompatActivity {
         List<FlightInfo> flightInfoList = getFlightInfoFromDatabase();
         flightInfoList = getFlightsByDateAndCities(dateList.get(0).getDay(), dateList.get(0).getMonth(), dateList.get(0).getYear(), departureCity, arrivalCity);
 
-        TicketItemAdapter adapterTicket = new TicketItemAdapter(flightInfoList, this);
+        TicketItemAdapter adapterTicket = new TicketItemAdapter(flightInfoList, this);;
         CalendarAdapter adapterCalendar = new CalendarAdapter(dateList, this, date -> {
             dateSelected = date;
             adapterTicket.updateData(getFlightsByDateAndCities(dateSelected.getDay(), dateSelected.getMonth(), dateSelected.getYear(), departureCity, arrivalCity));
