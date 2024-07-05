@@ -20,13 +20,14 @@ import java.util.Set;
 public class SeatAdapter extends BaseAdapter {
     private Context context;
     private List<Integer> data;
-    private Set<Integer> bookedSeats;
+    private Set<Integer> bookedSeats, selectedSeats;
     private OnButtonClickListener listener;
 
     SeatAdapter(Context context, List<Integer> data, OnButtonClickListener listener) {
         this.context = context;
         this.data = data;
         this.bookedSeats = new HashSet<>();
+        this.selectedSeats = new HashSet<>();
         this.listener = listener;
         populateBookedSeats();
     }
@@ -63,15 +64,21 @@ public class SeatAdapter extends BaseAdapter {
         int seat2Position = seat1Position + 1;
         int seat3Position = seat1Position + 2;
         int seat4Position = seat1Position + 3;
-        setSeatColor(btnSeat1, seat1Position);
-        setSeatColor(btnSeat2, seat2Position);
-        setSeatColor(btnSeat3, seat3Position);
-        setSeatColor(btnSeat4, seat4Position);
+        setSeatColorBooked(btnSeat1, seat1Position);
+        setSeatColorBooked(btnSeat2, seat2Position);
+        setSeatColorBooked(btnSeat3, seat3Position);
+        setSeatColorBooked(btnSeat4, seat4Position);
+
+        setSeatColorSelected(btnSeat1, seat1Position);
+        setSeatColorSelected(btnSeat2, seat2Position);
+        setSeatColorSelected(btnSeat3, seat3Position);
+        setSeatColorSelected(btnSeat4, seat4Position);
 
         btnSeat1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onButtonClick(position, 1, toggleSeatColor(btnSeat1));
+                selectedSeats.add(4 * position);
             }
         });
 
@@ -79,6 +86,7 @@ public class SeatAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 listener.onButtonClick(position, 2, toggleSeatColor(btnSeat2));
+                selectedSeats.add(4 * position + 1);
             }
         });
 
@@ -86,7 +94,7 @@ public class SeatAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 listener.onButtonClick(position, 3, toggleSeatColor(btnSeat3));
-
+                selectedSeats.add(4 * position + 2);
             }
         });
 
@@ -94,6 +102,7 @@ public class SeatAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 listener.onButtonClick(position, 4, toggleSeatColor(btnSeat4));
+                selectedSeats.add(4 * position + 3);
             }
         });
 
@@ -113,10 +122,18 @@ public class SeatAdapter extends BaseAdapter {
         }
     }
 
-    private void setSeatColor(Button button, int position) {
+    private void setSeatColorBooked(Button button, int position) {
         if (bookedSeats.contains(position)) {
             button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green_700)));
         } else {
+            button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green_50)));
+        }
+    }
+
+    private void setSeatColorSelected(Button button, int position) {
+        if (selectedSeats.contains(position)) {
+            button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.peach_300)));
+        } else if (!bookedSeats.contains(position)){
             button.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green_50)));
         }
     }

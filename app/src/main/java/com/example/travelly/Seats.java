@@ -1,5 +1,6 @@
 package com.example.travelly;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,8 +23,9 @@ public class Seats extends AppCompatActivity implements SeatAdapter.OnButtonClic
     private ListView listViewSeat;
     private SeatAdapter adapterSeat;
     private List<String> seatCode = new ArrayList<>();
-    private TextView tvSelectedSeat;
+    private TextView tvSelectedSeat, tvTotalPrice;
     private ImageButton btnBack;
+    private float priceTicket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +38,20 @@ public class Seats extends AppCompatActivity implements SeatAdapter.OnButtonClic
             return insets;
         });
 
+        Intent intent = getIntent();
+        priceTicket = intent.getFloatExtra("PRICE", 0);
+
         List<Integer> SeatRow = new ArrayList<Integer>();
         listViewSeat = findViewById(R.id.listViewSeat);
-        for (int i = 1 ; i <= 10 ; ++i) {
+        for (int i = 1 ; i <= 40 ; ++i) {
             SeatRow.add(i);
         }
         adapterSeat = new SeatAdapter(this, SeatRow, this);
         listViewSeat.setAdapter(adapterSeat);
 
         tvSelectedSeat = findViewById(R.id.textViewSelectedSeat);
+        tvTotalPrice = findViewById(R.id.textViewTotalPrice);
+
         btnBack = findViewById(R.id.buttonBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,5 +96,6 @@ public class Seats extends AppCompatActivity implements SeatAdapter.OnButtonClic
             }
         }
         tvSelectedSeat.setText(str);
+        tvTotalPrice.setText("Total price: $" + String.valueOf(seatCode.size() * priceTicket));
     }
 }

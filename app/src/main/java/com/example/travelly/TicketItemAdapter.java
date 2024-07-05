@@ -44,6 +44,7 @@ public class TicketItemAdapter extends RecyclerView.Adapter<TicketItemAdapter.Ti
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, Seats.class);
+            intent.putExtra("PRICE", flightInfo.getPrice());
             context.startActivity(intent);
         });
     }
