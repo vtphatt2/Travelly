@@ -133,9 +133,9 @@ public class FlightsDatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void insertSampleData() {
-        addFlight("Amsterdam (AMS)", "Amsterdam (AMS)", 4, 7, 2024, "9:00 AM", 150.0, "AA-101");
-        addFlight("Amsterdam (AMS)", "Amsterdam (AMS)", 4, 7, 2024, "10:00 AM", 150.0, "AA-102");
-        addFlight("Amsterdam (AMS)", "Amsterdam (AMS)", 4, 7, 2024, "12:00 AM", 150.0, "AA-103");
+        addFlight("Amsterdam (AMS)", "Amsterdam (AMS)", 5, 7, 2024, "9:00 AM", 150.0, "AA-101");
+        addFlight("Amsterdam (AMS)", "Amsterdam (AMS)", 5, 7, 2024, "10:00 AM", 150.0, "AA-102");
+        addFlight("Amsterdam (AMS)", "Amsterdam (AMS)", 5, 7, 2024, "12:00 AM", 150.0, "AA-103");
 
         addFlight("Amsterdam (AMS)", "Athens (ATH)", 2, 7, 2024, "9:00 AM", 150.0, "AA-101");
         addFlight("Atlanta (ATL)", "Auckland (AKL)", 2, 7, 2024, "10:00 AM", 400.0, "AT-202");

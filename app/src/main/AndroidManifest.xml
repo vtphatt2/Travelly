@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Travelly"
         tools:targetApi="31">
         <activity
+            android:name=".BoardingPass"
+            android:exported="false" />
+        <activity
             android:name=".Seats"
             android:exported="false" />
         <activity

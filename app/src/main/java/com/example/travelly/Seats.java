@@ -26,6 +26,7 @@ public class Seats extends AppCompatActivity implements SeatAdapter.OnButtonClic
     private TextView tvSelectedSeat, tvTotalPrice;
     private ImageButton btnBack;
     private float priceTicket;
+    private Button btnContinue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,15 @@ public class Seats extends AppCompatActivity implements SeatAdapter.OnButtonClic
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        btnContinue = findViewById(R.id.buttonContinue);
+        btnContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Seats.this, BoardingPass.class);
+                startActivity(intent);
             }
         });
     }
