@@ -43,6 +43,17 @@
         android:text="7 flights available New York to London"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewCalendar" />
 
+    <ImageButton
+        android:id="@+id/buttonFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewAnnounce"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewAnnounce"
+        android:layout_marginRight="30dp"
+        android:backgroundTint="@color/peach_300"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTicket"
         android:layout_width="match_parent"

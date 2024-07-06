@@ -3,7 +3,6 @@ package com.example.travelly;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +22,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.travelly.Database.FlightsDatabaseHandler;
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.Calendar;
 import java.util.List;
@@ -39,6 +42,7 @@ public class TransportBooking extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidThreeTen.init(this);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_transport_booking);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -99,6 +103,11 @@ public class TransportBooking extends AppCompatActivity {
 
         tvDeparture = findViewById(R.id.textViewDepartureDate);
         tvReturn = findViewById(R.id.textViewReturnDate);
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String currentDateString = currentDate.format(formatter);
+        tvDeparture.setText(currentDateString);
+        tvReturn.setText(currentDateString);
         tvDeparture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +177,7 @@ public class TransportBooking extends AppCompatActivity {
                 Intent intent = new Intent(TransportBooking.this, Flights.class);
                 intent.putExtra("DEPARTURE_CITY", departureCity);
                 intent.putExtra("ARRIVAL_CITY", arrivalCity);
+                intent.putExtra("DEPARTURE_DATE", tvDeparture.getText().toString());
                 startActivity(intent);
             }
         });
@@ -179,11 +189,11 @@ public class TransportBooking extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(tv.getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                // Set selected date to TextView
-                String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                // Set selected date to TextView in "dd/MM/yyyy" format
+                String selectedDate = String.format("%02d/%02d/%d", dayOfMonth, monthOfYear + 1, year);
                 tv.setText(selectedDate);
             }
         }, year, month, day);

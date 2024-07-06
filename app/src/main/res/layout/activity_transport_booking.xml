@@ -157,7 +157,9 @@
                 android:id="@+id/editTextNbPerson"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="0"/>
 
             <ImageView
                 android:layout_width="50dp"
@@ -172,7 +174,9 @@
                 android:id="@+id/editTextNbChildren"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="0" />
 
             <ImageView
                 android:layout_width="50dp"
@@ -187,7 +191,9 @@
                 android:id="@+id/editTextNbPet"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="0" />
 
             <ImageView
                 android:layout_width="50dp"
@@ -202,7 +208,9 @@
                 android:id="@+id/editTextNbLuggage"
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="0" />
 
         </LinearLayout>
 

@@ -18,10 +18,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     private Context context;
     private OnItemClickListener onItemClickListener;
 
-    public CalendarAdapter(List<Date> dateList, Context context, OnItemClickListener onItemClickListener) {
+    public CalendarAdapter(List<Date> dateList, Context context, int selectedPosition, OnItemClickListener onItemClickListener) {
         this.dateList = dateList;
         this.context = context;
         this.onItemClickListener = onItemClickListener;
+        this.selectedPosition = selectedPosition;
     }
 
     public interface OnItemClickListener {

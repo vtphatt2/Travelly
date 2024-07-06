@@ -19,7 +19,10 @@ import com.example.travelly.Database.FlightsDatabaseHandler;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.TextStyle;
+import org.threeten.bp.temporal.ChronoUnit;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -30,7 +33,7 @@ public class Flights extends AppCompatActivity {
     private RecyclerView recyclerViewCalendar, recyclerViewTicket;
     private TextView tvAnnounce;
     private FlightsDatabaseHandler db;
-    private String departureCity, arrivalCity;
+    private String departureCity, arrivalCity, departureDate;
 
 
     @Override
@@ -44,6 +47,11 @@ public class Flights extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Intent intent = getIntent();
+        departureCity = intent.getStringExtra("DEPARTURE_CITY");
+        arrivalCity = intent.getStringExtra("ARRIVAL_CITY");
+        departureDate = intent.getStringExtra("DEPARTURE_DATE");
 
         btnBack = findViewById(R.id.buttonBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -59,16 +67,12 @@ public class Flights extends AppCompatActivity {
         recyclerViewCalendar.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewTicket.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        Intent intent = getIntent();
-        departureCity = intent.getStringExtra("DEPARTURE_CITY");
-        arrivalCity = intent.getStringExtra("ARRIVAL_CITY");
-
         db = new FlightsDatabaseHandler(this);
         List<Date> dateList = getAroundCurrentDate();
         List<FlightInfo> flightInfoList = db.getFlightsByDateAndCities(dateList.get(0).getDay(), dateList.get(0).getMonth(), dateList.get(0).getYear(), departureCity, arrivalCity);
 
         TicketItemAdapter adapterTicket = new TicketItemAdapter(flightInfoList, this);;
-        CalendarAdapter adapterCalendar = new CalendarAdapter(dateList, this, date -> {
+        CalendarAdapter adapterCalendar = new CalendarAdapter(dateList, this, calculateDateDifference(departureDate), date -> {
             dateSelected = date;
             adapterTicket.updateData(db.getFlightsByDateAndCities(dateSelected.getDay(), dateSelected.getMonth(), dateSelected.getYear(), departureCity, arrivalCity));
         });
@@ -80,6 +84,13 @@ public class Flights extends AppCompatActivity {
         tvAnnounce.setText(String.valueOf(flightInfoList.size()) + " flights available " + extractCityName(departureCity) + " to " + extractCityName(arrivalCity));
     }
 
+    public static int calculateDateDifference(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate inputDate = LocalDate.parse(date, formatter);
+        LocalDate today = LocalDate.now();
+
+        return Math.abs((int) ChronoUnit.DAYS.between(inputDate, today));
+    }
 
     private List<Date> getAroundCurrentDate() {
         List<Date> dates = new ArrayList<>();

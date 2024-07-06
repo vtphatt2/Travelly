@@ -41,9 +41,9 @@ public class Loading extends AppCompatActivity {
         tvLoadingPercent = findViewById(R.id.textViewLoadingPercent);
         ivLoadingBar = findViewById(R.id.imageViewLoadingBar);
 
-//        initializeData();
-        cleanAndReinitializeData();
-        jumpToMainActivity();
+        initializeData();
+//        cleanAndReinitializeData();
+//        jumpToMainActivity();
     }
 
     private void initializeData() {
