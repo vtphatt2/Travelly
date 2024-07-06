@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,9 +17,14 @@ import com.example.travelly.Database.FlightsDatabaseHandler;
 import com.example.travelly.R;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
+import org.threeten.bp.LocalDate;
+
 public class Loading extends AppCompatActivity {
-    private final int DELAY_MILLIS = 1000;
+    private final int DELAY_MILLIS = 500;
+    private static final int STAGE_ONE_PROGRESS = 40;
+    private static final int STAGE_TWO_PROGRESS = 100;
     private ImageView ivLoadingBar;
+    private TextView tvLoadingPercent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,26 +38,72 @@ public class Loading extends AppCompatActivity {
             return insets;
         });
 
+        tvLoadingPercent = findViewById(R.id.textViewLoadingPercent);
         ivLoadingBar = findViewById(R.id.imageViewLoadingBar);
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            ivLoadingBar.setImageResource(R.drawable.loading40);
-            initializeData();
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                ivLoadingBar.setImageResource(R.drawable.loading100);
-                jumpToMainActivity();
-            }, DELAY_MILLIS);
-        }, DELAY_MILLIS);
+
+//        initializeData();
+        cleanAndReinitializeData();
+        jumpToMainActivity();
     }
 
     private void initializeData() {
         FlightsDatabaseHandler db = new FlightsDatabaseHandler(this);
-        db.deleteAllTables();
-        db.addFamousCities();
-        db.generateFlights();
+
+        LocalDate currentDate = LocalDate.now();
+        if (db.flightExistsWithSpecificDate(currentDate.getDayOfMonth(), currentDate.getMonthValue(), currentDate.getYear())) {
+            // Stage 1: Delete all tables
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                updateLoadingProgress(STAGE_ONE_PROGRESS);
+            }, DELAY_MILLIS);
+
+            // Stage 2: Add famous cities and generate flights
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                updateLoadingProgress(STAGE_TWO_PROGRESS);
+                jumpToMainActivity();
+            }, 2 * DELAY_MILLIS);
+        }
+        else {
+            // Stage 1: Delete all tables
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                db.deleteAllTables();
+                updateLoadingProgress(STAGE_ONE_PROGRESS);
+            }, DELAY_MILLIS);
+
+            // Stage 2: Add famous cities and generate flights
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                db.addFamousCities();
+                db.generateFlights();
+                updateLoadingProgress(STAGE_TWO_PROGRESS);
+                jumpToMainActivity();
+            }, 2 * DELAY_MILLIS);
+        }
+    }
+
+    private void updateLoadingProgress(int progress) {
+        tvLoadingPercent.setText("Loading... " + progress + "%");
+
+        switch (progress) {
+            case STAGE_ONE_PROGRESS:
+                ivLoadingBar.setImageResource(R.drawable.loading40);
+                break;
+            case STAGE_TWO_PROGRESS:
+                ivLoadingBar.setImageResource(R.drawable.loading100);
+                break;
+            default:
+                ivLoadingBar.setImageResource(R.drawable.loading0);
+                break;
+        }
     }
 
     private void jumpToMainActivity() {
         Intent intent = new Intent(Loading.this, MainActivity.class);
         startActivity(intent);
+    }
+
+    private void cleanAndReinitializeData() {
+        FlightsDatabaseHandler db = new FlightsDatabaseHandler(this);
+        db.deleteAllTables();
+        db.addFamousCities();
+        db.generateFlights();
     }
 }

@@ -175,34 +175,40 @@ public class FlightsDatabaseHandler extends SQLiteOpenHelper {
         Random random = new Random();
         LocalDate currentDate = LocalDate.now();
 
+        // Possible minutes for departure time
+        int[] minutesOptions = {0, 15, 30, 45};
+
         for (int i = 0; i < numberOfCities; i++) {
             for (int j = 0; j < numberOfCities; j++) {
                 String departureCity = cities.get(i);
                 String arrivalCity = cities.get(j);
-
-                int denstiy = 0;
-                while (denstiy < 9) {
-                    // Generate a random date within the next 30 days
-                    LocalDate date = currentDate.plusDays(random.nextInt(30));
+                for (int t = 0; t < 30; t++) {
+                    LocalDate date = currentDate.plusDays(t);
                     int flightDay = date.getDayOfMonth();
                     int flightMonth = date.getMonthValue();
                     int flightYear = date.getYear();
+                    for (int k = 0; k < 4; k++) {
+                        // Generate random departure time with specific minute options
+                        int hour = random.nextInt(12) + 1;
+                        int minute = minutesOptions[random.nextInt(minutesOptions.length)];
+                        String departureTime = String.format("%02d:%02d %s", hour, minute, random.nextBoolean() ? "AM" : "PM");
 
-                    // Generate random departure time, ticket price, and flight number
-                    String departureTime = String.format("%02d:%02d %s", random.nextInt(12) + 1, random.nextInt(60), random.nextBoolean() ? "AM" : "PM");
-                    double ticketPrice = 100 + (1000 - 100) * random.nextDouble(); // Random ticket price between 100 and 1000
-                    String flightNumber = String.format("%s-%03d", departureCity.substring(0, 2) + arrivalCity.substring(0, 2), random.nextInt(900) + 100);
+                        // Generate ticket price rounded to 1 decimal place
+                        double ticketPrice = Math.round((100 + (1000 - 100) * random.nextDouble()) * 10.0) / 10.0;
 
-                    // Add the generated flight to the database
-                    addFlight(departureCity, arrivalCity, flightDay, flightMonth, flightYear, departureTime, ticketPrice, flightNumber);
-                    Log.i("Generate Flights", "Created flight: " + departureCity + " to " + arrivalCity + " on " + flightDay + "/" + flightMonth + "/" + flightYear +
-                            " at " + departureTime + ", Price: " + ticketPrice + ", Flight Number: " + flightNumber);
+                        // Generate flight number
+                        String flightNumber = String.format("%s-%02d", departureCity.substring(0, 1).toUpperCase() + arrivalCity.substring(0, 1).toUpperCase(), random.nextInt(900) + 100);
 
-                    denstiy++;
+                        // Add the generated flight to the database
+                        addFlight(departureCity, arrivalCity, flightDay, flightMonth, flightYear, departureTime, ticketPrice, flightNumber);
+                        Log.i("Generate Flights", "Created flight: " + departureCity + " to " + arrivalCity + " on " + flightDay + "/" + flightMonth + "/" + flightYear +
+                                " at " + departureTime + ", Price: " + ticketPrice + ", Flight Number: " + flightNumber);
+                    }
                 }
             }
         }
     }
+
 
     public List<FlightInfo> getFlightsByDateAndCities(Integer flightDay, Integer flightMonth, Integer flightYear, String departureCity, String arrivalCity) {
         List<FlightInfo> flightList = new ArrayList<>();
@@ -250,6 +256,27 @@ public class FlightsDatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return flightList;
     }
+
+    public boolean flightExistsWithSpecificDate(int flightDay, int flightMonth, int flightYear) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT COUNT(*) FROM " + TABLE_FLIGHTS + " WHERE "
+                + COL_FLIGHT_DAY + " = ? AND "
+                + COL_FLIGHT_MONTH + " = ? AND "
+                + COL_FLIGHT_YEAR + " = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(flightDay), String.valueOf(flightMonth), String.valueOf(flightYear)});
+
+        boolean exists = false;
+        if (cursor.moveToFirst()) {
+            exists = cursor.getInt(0) > 0;
+        }
+
+        cursor.close();
+        db.close();
+        return exists;
+    }
+
 
     public void deleteAllTables() {
         SQLiteDatabase db = this.getWritableDatabase();
