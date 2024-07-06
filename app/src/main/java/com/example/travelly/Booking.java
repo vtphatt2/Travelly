@@ -13,7 +13,6 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Booking extends Fragment {
     private ListView listView;
     private BookingItemAdapter customAdapter;

@@ -22,7 +22,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.travelly.Database.FlightsDatabaseHandler;
+
 import java.util.Calendar;
+import java.util.List;
 
 public class TransportBooking extends AppCompatActivity {
     ImageButton btnBack, btnSwap;
@@ -31,6 +34,7 @@ public class TransportBooking extends AppCompatActivity {
     ImageView ivPlane, ivBoat, ivTrain, ivBus;
     Button btnSearch;
     String departureCity, arrivalCity;
+    FlightsDatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +55,11 @@ public class TransportBooking extends AppCompatActivity {
             }
         });
 
+        db = new FlightsDatabaseHandler(this);
+        List<String> cityList = db.getAllCities();
         spnFromCity = findViewById(R.id.spinnerFromCity);
         spnToCity = findViewById(R.id.spinnerToCity);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.options_array_City, R.layout.spinner_city_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_city_item, cityList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnFromCity.setAdapter(adapter);
         spnToCity.setAdapter(adapter);
@@ -80,7 +85,6 @@ public class TransportBooking extends AppCompatActivity {
                 // Do nothing
             }
         });
-
 
         btnSwap = findViewById(R.id.buttonSwap);
         btnSwap.setOnClickListener(new View.OnClickListener() {
@@ -167,7 +171,6 @@ public class TransportBooking extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     private void showDatePickerDialog(TextView tv) {
