@@ -51,12 +51,15 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.SlotViewHo
         String option = options.get(position);
         holder.tvOption.setText(option);
 
+        // Retrieve the current position of the item
+        int currentPosition = holder.getAdapterPosition();
+
         if (holder.tvOption.getText().toString().equals(savedOption)) {
-            selectedPosition = position;
+            selectedPosition = currentPosition;
             savedOption = "";
         }
 
-        if (selectedPosition == position) {
+        if (selectedPosition == currentPosition) {
             holder.tvOption.setBackgroundResource(R.drawable.selected_item_filter);
             holder.tvOption.setTextColor(ContextCompat.getColor(holder.tvOption.getContext(), R.color.white));
         } else {
@@ -65,15 +68,19 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.SlotViewHo
         }
 
         holder.itemView.setOnClickListener(v -> {
-            notifyItemChanged(selectedPosition);
-            selectedPosition = holder.getAdapterPosition();
-            notifyItemChanged(selectedPosition);
+            int adapterPosition = holder.getAdapterPosition();
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                notifyItemChanged(selectedPosition);
+                selectedPosition = adapterPosition;
+                notifyItemChanged(selectedPosition);
 
-            if (listener != null) {
-                listener.onItemClick(options.get(selectedPosition), adapterType);
+                if (listener != null) {
+                    listener.onItemClick(options.get(selectedPosition), adapterType);
+                }
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
