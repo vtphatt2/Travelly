@@ -13,19 +13,31 @@ import java.util.List;
 
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.SlotViewHolder> {
     private List<String> options;
-    private int selectedPosition = 0;
+    private int selectedPosition = -1;
     private OnItemClickListener listener;
+    private String savedOption;
+    private int adapterType;
 
     void setOnClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
     public interface OnItemClickListener {
-        void onItemClick(String item);
+        void onItemClick(String item, int type);
     }
 
-    FilterAdapter(List<String> options) {
+    public void setSavedOption(String savedOption) {
+        this.savedOption = savedOption;
+        for (int i = 0 ; i < options.size() ; ++i) {
+            if (options.get(i).equals(savedOption)) {
+                selectedPosition = i;
+            }
+        }
+    }
+
+    FilterAdapter(List<String> options, int type) {
         this.options = options;
+        this.adapterType = type;
     }
 
     @Override
@@ -38,6 +50,11 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.SlotViewHo
     public void onBindViewHolder(FilterAdapter.SlotViewHolder holder, int position) {
         String option = options.get(position);
         holder.tvOption.setText(option);
+
+        if (holder.tvOption.getText().toString().equals(savedOption)) {
+            selectedPosition = position;
+            savedOption = "";
+        }
 
         if (selectedPosition == position) {
             holder.tvOption.setBackgroundResource(R.drawable.selected_item_filter);
@@ -53,7 +70,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.SlotViewHo
             notifyItemChanged(selectedPosition);
 
             if (listener != null) {
-                listener.onItemClick(options.get(selectedPosition));
+                listener.onItemClick(options.get(selectedPosition), adapterType);
             }
         });
     }

@@ -104,8 +104,8 @@
             android:id="@+id/sliderPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:valueFrom="0"
-            android:valueTo="700"
+            android:valueFrom="200"
+            android:valueTo="1000"
             app:labelBehavior="gone"
             app:thumbRadius="12dp"
             app:trackColor="@color/green_50"
@@ -336,6 +336,7 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/buttonReset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"

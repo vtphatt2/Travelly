@@ -43,6 +43,10 @@ public class Flights extends AppCompatActivity {
     private List<FlightInfo> flightInfoList;
     private TicketItemAdapter adapterTicket;
     private CalendarAdapter adapterCalendar;
+    private String departureTimeRange = "All", arrivalTimeRange = "All";
+    private double minPrice = 250, maxPrice = 500;
+    private String sortBy = "Price";
+    private boolean isChooseCoffee = false, isChooseForkKnife = false, isChooseWifi = false, isChooseSnowFlake = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +87,19 @@ public class Flights extends AppCompatActivity {
         adapterTicket = new TicketItemAdapter(flightInfoList, this);;
         adapterCalendar = new CalendarAdapter(dateList, this, calculateDateDifference(departureDate), date -> {
             dateSelected = date;
-            adapterTicket.updateData(db.getFlightsByDateAndCities(dateSelected.getDay(), dateSelected.getMonth(), dateSelected.getYear(), departureCity, arrivalCity));
+            flightInfoList = db.getFlightsWithConditions(departureCity, arrivalCity, dateSelected.getDay(), dateSelected.getMonth(), dateSelected.getYear(), minPrice, maxPrice);
+            flightInfoList = flightInDepartureRange(flightInfoList, departureTimeRange);
+            if (sortBy.equals("Price")) {
+                sortFlightsByPrice(flightInfoList);
+            }
+            else if (sortBy.equals("Departure time")) {
+                sortFlightsByDepartureTime(flightInfoList);
+            }
+            else if (sortBy.equals("Lowest fare")) {
+                retainLowestPriceFlight(flightInfoList);
+            }
+            adapterTicket.updateData(flightInfoList);
+            tvAnnounce.setText(String.valueOf(flightInfoList.size()) + " flights available " + extractCityName(departureCity) + " to " + extractCityName(arrivalCity));
         });
 
         recyclerViewCalendar.setAdapter(adapterCalendar);
@@ -98,6 +114,15 @@ public class Flights extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Flights.this, Filter.class);
+                intent.putExtra("DEPARTURE_TIME_RANGE", departureTimeRange);
+                intent.putExtra("ARRIVAL_TIME_RANGE", arrivalTimeRange);
+                intent.putExtra("MIN-PRICE", minPrice);
+                intent.putExtra("MAX-PRICE", maxPrice);
+                intent.putExtra("SORT-BY", sortBy);
+                intent.putExtra("COFFEE", isChooseCoffee);
+                intent.putExtra("FORK_KNIFE", isChooseForkKnife);
+                intent.putExtra("WIFI", isChooseWifi);
+                intent.putExtra("SNOW_FLAKE", isChooseSnowFlake);
                 startActivityForResult(intent, 1);
             }
         });
@@ -108,10 +133,15 @@ public class Flights extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
             if (data != null) {
-                String departureTimeRange = data.getStringExtra("DEPARTURE");
-                double minPrice = data.getDoubleExtra("PRICE-MIN", 200);
-                double maxPrice = data.getDoubleExtra("PRICE-MAX", 1000);
-                String sortBy = data.getStringExtra("SORT-BY");
+                departureTimeRange = data.getStringExtra("DEPARTURE");
+                arrivalTimeRange = data.getStringExtra("ARRIVAL");
+                minPrice = data.getDoubleExtra("PRICE-MIN", 200);
+                maxPrice = data.getDoubleExtra("PRICE-MAX", 1000);
+                sortBy = data.getStringExtra("SORT-BY");
+                isChooseCoffee = data.getBooleanExtra("COFFEE", false);
+                isChooseForkKnife = data.getBooleanExtra("FORK_KNIFE", false);
+                isChooseWifi = data.getBooleanExtra("WIFI", false);
+                isChooseSnowFlake = data.getBooleanExtra("SNOW_FLAKE", false);
 
                 flightInfoList = db.getFlightsWithConditions(departureCity, arrivalCity, dateSelected.getDay(), dateSelected.getMonth(), dateSelected.getYear(), minPrice, maxPrice);
                 flightInfoList = flightInDepartureRange(flightInfoList, departureTimeRange);
@@ -125,6 +155,8 @@ public class Flights extends AppCompatActivity {
                     retainLowestPriceFlight(flightInfoList);
                 }
                 adapterTicket.updateData(flightInfoList);
+
+                tvAnnounce.setText(String.valueOf(flightInfoList.size()) + " flights available " + extractCityName(departureCity) + " to " + extractCityName(arrivalCity));
             }
         }
     }

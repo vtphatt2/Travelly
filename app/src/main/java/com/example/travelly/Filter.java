@@ -31,20 +31,28 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Filter extends AppCompatActivity implements FilterAdapter.OnItemClickListener {
-    ImageButton btnBack, btnCoffee, btnForkKnife, btnWifi, btnSnowFlake;
-    RecyclerView rvDeparture, rvArrival;
-    RangeSlider rsPrice;
-    EditText etFromPrice, etToPrice;
-    RadioGroup rgSortBy;
-    Button btnDone;
+    private ImageButton btnBack, btnCoffee, btnForkKnife, btnWifi, btnSnowFlake;
+    private RecyclerView rvDeparture, rvArrival;
+    private RangeSlider rsPrice;
+    private EditText etFromPrice, etToPrice;
+    private RadioGroup rgSortBy;
+    private Button btnDone, btnReset;
     private boolean isUpdating = false;
-    private boolean isChooseCoffee = false, isChooseForkKnife = false, isChooseWifi = false, isChooseSnowFlake = false;
-    private String selectedSortByOption = "";
-    private String selectedDepartureRange = "All";
+    private boolean isChooseCoffee, isChooseForkKnife, isChooseWifi, isChooseSnowFlake;
+    private String departureTimeRange, arrivalTimeRange;
+    private double minPrice, maxPrice;
+    private String sortBy;
+
+    private static final int DEPARTURE_ADAPTER = 1;
+    private static final int ARRIVAL_ADAPTER = 2;
 
     @Override
-    public void onItemClick(String item) {
-        selectedDepartureRange = item;
+    public void onItemClick(String item, int type) {
+        if (type == DEPARTURE_ADAPTER) {
+            departureTimeRange = item;
+        } else if (type == ARRIVAL_ADAPTER) {
+            arrivalTimeRange = item;
+        }
     }
 
     @Override
@@ -58,6 +66,17 @@ public class Filter extends AppCompatActivity implements FilterAdapter.OnItemCli
             return insets;
         });
 
+        Intent intent = getIntent();
+        departureTimeRange = intent.getStringExtra("DEPARTURE_TIME_RANGE");
+        arrivalTimeRange = intent.getStringExtra("ARRIVAL_TIME_RANGE");
+        minPrice = intent.getDoubleExtra("MIN-PRICE", 200);
+        maxPrice = intent.getDoubleExtra("MAX-PRICE", 1000);
+        sortBy = intent.getStringExtra("SORT-BY");
+        isChooseCoffee = intent.getBooleanExtra("COFFEE", false);
+        isChooseForkKnife = intent.getBooleanExtra("FORK_KNIFE", false);
+        isChooseWifi = intent.getBooleanExtra("WIFI", false);
+        isChooseSnowFlake = intent.getBooleanExtra("SNOW_FLAKE", false);
+
         btnBack = findViewById(R.id.buttonBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,14 +88,17 @@ public class Filter extends AppCompatActivity implements FilterAdapter.OnItemCli
         rvDeparture = findViewById(R.id.recyclerViewDeparture);
         rvDeparture.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         List<String> departureOptions = Arrays.asList("All", "12AM - 04AM", "04AM - 08AM", "08AM - 12PM", "12PM - 04PM", "04PM - 08PM", "08PM - 12AM");
-        FilterAdapter departureAdapter = new FilterAdapter(departureOptions);
+        FilterAdapter departureAdapter = new FilterAdapter(departureOptions, DEPARTURE_ADAPTER);
         departureAdapter.setOnClickListener(this);
+        departureAdapter.setSavedOption(departureTimeRange);
         rvDeparture.setAdapter(departureAdapter);
 
         rvArrival = findViewById(R.id.recyclerViewArrival);
         rvArrival.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         List<String> arrivalOptions = Arrays.asList("All", "12AM - 04AM", "04AM - 08AM", "08AM - 12PM", "12PM - 04PM", "04PM - 08PM", "08PM - 12AM");
-        FilterAdapter arrivalAdapter = new FilterAdapter(arrivalOptions);
+        FilterAdapter arrivalAdapter = new FilterAdapter(arrivalOptions, ARRIVAL_ADAPTER);
+        arrivalAdapter.setSavedOption(arrivalTimeRange);
+        arrivalAdapter.setOnClickListener(this);
         rvArrival.setAdapter(arrivalAdapter);
 
         rsPrice = findViewById(R.id.sliderPrice);
@@ -84,10 +106,13 @@ public class Filter extends AppCompatActivity implements FilterAdapter.OnItemCli
         etToPrice = findViewById(R.id.editTextTo);
 
         // Set initial slider values
-        rsPrice.setValues(250f, 500f);
+        rsPrice.setValues((float) minPrice, (float) maxPrice);
         rsPrice.setCustomThumbDrawable(R.drawable.custom_thumb);
         rsPrice.setThumbHeight(50);
         rsPrice.setTrackActiveTintList(getResources().getColorStateList(R.color.green_500));
+
+        etFromPrice.setText(String.valueOf((int) Math.round(minPrice)));
+        etToPrice.setText(String.valueOf((int) Math.round(maxPrice)));
 
         // Add TextWatchers to EditText fields to update RangeSlider values
         etFromPrice.addTextChangedListener(new CustomTextWatcher(etFromPrice));
@@ -107,6 +132,24 @@ public class Filter extends AppCompatActivity implements FilterAdapter.OnItemCli
         btnForkKnife = findViewById(R.id.imageButtonForkKnife);
         btnWifi = findViewById(R.id.imageButtonWifi);
         btnSnowFlake = findViewById(R.id.imageButtonSnowFlake);
+
+        if (isChooseCoffee) {
+            btnCoffee.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.green_500));
+            btnCoffee.setImageTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.white));
+        }
+        if (isChooseForkKnife) {
+            btnForkKnife.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.green_500));
+            btnForkKnife.setImageTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.white));
+        }
+        if (isChooseWifi) {
+            btnWifi.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.green_500));
+            btnWifi.setImageTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.white));
+        }
+        if (isChooseSnowFlake) {
+            btnSnowFlake.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.green_500));
+            btnSnowFlake.setImageTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.white));
+        }
+
 
         btnCoffee.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,27 +212,84 @@ public class Filter extends AppCompatActivity implements FilterAdapter.OnItemCli
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton selectedRadioButton = findViewById(checkedId);
-                selectedSortByOption = selectedRadioButton.getText().toString();
+                sortBy = selectedRadioButton.getText().toString();
             }
         });
 
+        for (int i = 0; i < rgSortBy.getChildCount(); i++) {
+            RadioButton radioButton = (RadioButton) rgSortBy.getChildAt(i);
+            if (radioButton.getText().toString().equals(sortBy)) {
+                radioButton.setChecked(true);
+                break;
+            }
+        }
 
         btnDone = findViewById(R.id.buttonDone);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("DEPARTURE", selectedDepartureRange);
-                resultIntent.putExtra("PRICE-MIN", Double.valueOf(etFromPrice.getText().toString()));
-                resultIntent.putExtra("PRICE-MAX", Double.valueOf(etToPrice.getText().toString()));
-                resultIntent.putExtra("SORT-BY", selectedSortByOption);
+                resultIntent.putExtra("DEPARTURE", departureTimeRange);
+                resultIntent.putExtra("ARRIVAL", arrivalTimeRange);
+                minPrice = Double.valueOf(etFromPrice.getText().toString());
+                maxPrice = Double.valueOf(etToPrice.getText().toString());
+                resultIntent.putExtra("PRICE-MIN", minPrice);
+                resultIntent.putExtra("PRICE-MAX", maxPrice);
+                resultIntent.putExtra("SORT-BY", sortBy);
+                resultIntent.putExtra("COFFEE", isChooseCoffee);
+                resultIntent.putExtra("FORK_KNIFE", isChooseForkKnife);
+                resultIntent.putExtra("WIFI", isChooseWifi);
+                resultIntent.putExtra("SNOW_FLAKE", isChooseSnowFlake);
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
             }
         });
 
-    }
+        btnReset = findViewById(R.id.buttonReset);
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                departureTimeRange = "All";
+                arrivalTimeRange = "All";
+                minPrice = 250;
+                maxPrice = 500;
+                isChooseCoffee = false;
+                isChooseForkKnife = false;
+                isChooseWifi = false;
+                isChooseSnowFlake = false;
+                sortBy = "Price";
 
+                departureAdapter.setSavedOption(departureTimeRange);
+                departureAdapter.notifyDataSetChanged();
+                arrivalAdapter.setSavedOption(arrivalTimeRange);
+                arrivalAdapter.notifyDataSetChanged();
+
+                rsPrice.setValues((float) minPrice, (float) maxPrice);
+                etFromPrice.setText(String.valueOf((int) Math.round(minPrice)));
+                etToPrice.setText(String.valueOf((int) Math.round(maxPrice)));
+
+                btnCoffee.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.white));
+                btnCoffee.setImageTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.green_500));
+
+                btnForkKnife.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.white));
+                btnForkKnife.setImageTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.green_500));
+
+                btnWifi.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.white));
+                btnWifi.setImageTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.green_500));
+
+                btnSnowFlake.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.white));
+                btnSnowFlake.setImageTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.green_500));
+
+                for (int i = 0; i < rgSortBy.getChildCount(); i++) {
+                    RadioButton radioButton = (RadioButton) rgSortBy.getChildAt(i);
+                    if (radioButton.getText().toString().equals(sortBy)) {
+                        radioButton.setChecked(true);
+                        break;
+                    }
+                }
+            }
+        });
+    }
 
     private class CustomTextWatcher implements TextWatcher {
         private EditText editText;
