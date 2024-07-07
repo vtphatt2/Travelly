@@ -64,6 +64,13 @@ public class Home extends Fragment {
                     Intent intent = new Intent(requireContext(), TransportBooking.class);
                     startActivity(intent);
                 }
+                else if (!searchContent.isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                    builder.setTitle("Not found");
+                    builder.setMessage(searchContent + " service does not exist.");
+                    builder.setPositiveButton("OK", null);
+                    builder.show();
+                }
             }
         });
 

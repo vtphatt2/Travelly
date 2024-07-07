@@ -8,17 +8,7 @@
     <ImageView
         android:id="@+id/imageViewItem"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:scaleType="centerCrop"/>
-
-    <TextView
-        android:id="@+id/textViewItem"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:paddingTop="8dp"
-        android:textStyle="bold"/>
+        android:scaleType="centerCrop"/>
 
 </LinearLayout>

@@ -39,10 +39,10 @@ public class Booking extends Fragment {
 
         listView = view.findViewById(R.id.listViewBooking);
         itemList = new ArrayList<>();
-        itemList.add(new BookingItem("Trips", R.drawable.trips_booking));
-        itemList.add(new BookingItem("Hotel", R.drawable.hotel_booking));
-        itemList.add(new BookingItem("Transport", R.drawable.transport_booking));
-        itemList.add(new BookingItem("Events", R.drawable.event_booking));
+        itemList.add(new BookingItem("Trips", R.drawable.trip_card));
+        itemList.add(new BookingItem("Hotel", R.drawable.hotel_card));
+        itemList.add(new BookingItem("Transport", R.drawable.transport_card));
+        itemList.add(new BookingItem("Events", R.drawable.event_card));
 
         customAdapter = new BookingItemAdapter(requireActivity(), itemList, new View.OnClickListener() {
             @Override

@@ -43,11 +43,9 @@ public class BookingItemAdapter extends BaseAdapter {
         }
 
         ImageView imageView = convertView.findViewById(R.id.imageViewItem);
-        TextView textView = convertView.findViewById(R.id.textViewItem);
 
         BookingItem item = itemList.get(position);
 
-        textView.setText(item.getTitle());
         imageView.setImageResource(item.getImageResId());
 
         convertView.setTag(position);
