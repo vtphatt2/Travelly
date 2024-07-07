@@ -286,7 +286,7 @@
                 android:id="@+id/imageViewPlane"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_plane"
+                android:src="@drawable/plane"
                 app:tint="@color/white"
                 android:background="@color/green_500"
                 android:layout_marginHorizontal="25dp"/>
