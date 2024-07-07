@@ -2,6 +2,7 @@ package com.example.travelly;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,18 +24,25 @@ import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.TextStyle;
 import org.threeten.bp.temporal.ChronoUnit;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class Flights extends AppCompatActivity {
-    private ImageButton btnBack;
+    private ImageButton btnBack, btnFilter;
     private Date dateSelected;
     private RecyclerView recyclerViewCalendar, recyclerViewTicket;
     private TextView tvAnnounce;
     private FlightsDatabaseHandler db;
     private String departureCity, arrivalCity, departureDate;
-
+    private List<FlightInfo> flightInfoList;
+    private TicketItemAdapter adapterTicket;
+    private CalendarAdapter adapterCalendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +77,11 @@ public class Flights extends AppCompatActivity {
 
         db = new FlightsDatabaseHandler(this);
         List<Date> dateList = getAroundCurrentDate();
-        List<FlightInfo> flightInfoList = db.getFlightsByDateAndCities(dateList.get(0).getDay(), dateList.get(0).getMonth(), dateList.get(0).getYear(), departureCity, arrivalCity);
+        dateSelected = dateList.get(0);
+        flightInfoList = db.getFlightsByDateAndCities(dateSelected.getDay(), dateSelected.getMonth(), dateSelected.getYear(), departureCity, arrivalCity);
 
-        TicketItemAdapter adapterTicket = new TicketItemAdapter(flightInfoList, this);;
-        CalendarAdapter adapterCalendar = new CalendarAdapter(dateList, this, calculateDateDifference(departureDate), date -> {
+        adapterTicket = new TicketItemAdapter(flightInfoList, this);;
+        adapterCalendar = new CalendarAdapter(dateList, this, calculateDateDifference(departureDate), date -> {
             dateSelected = date;
             adapterTicket.updateData(db.getFlightsByDateAndCities(dateSelected.getDay(), dateSelected.getMonth(), dateSelected.getYear(), departureCity, arrivalCity));
         });
@@ -82,6 +91,129 @@ public class Flights extends AppCompatActivity {
 
         tvAnnounce = findViewById(R.id.textViewAnnounce);
         tvAnnounce.setText(String.valueOf(flightInfoList.size()) + " flights available " + extractCityName(departureCity) + " to " + extractCityName(arrivalCity));
+
+
+        btnFilter = findViewById(R.id.buttonFilter);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Flights.this, Filter.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            if (data != null) {
+                String departureTimeRange = data.getStringExtra("DEPARTURE");
+                double minPrice = data.getDoubleExtra("PRICE-MIN", 200);
+                double maxPrice = data.getDoubleExtra("PRICE-MAX", 1000);
+                String sortBy = data.getStringExtra("SORT-BY");
+
+                flightInfoList = db.getFlightsWithConditions(departureCity, arrivalCity, dateSelected.getDay(), dateSelected.getMonth(), dateSelected.getYear(), minPrice, maxPrice);
+                flightInfoList = flightInDepartureRange(flightInfoList, departureTimeRange);
+                if (sortBy.equals("Price")) {
+                    sortFlightsByPrice(flightInfoList);
+                }
+                else if (sortBy.equals("Departure time")) {
+                    sortFlightsByDepartureTime(flightInfoList);
+                }
+                else if (sortBy.equals("Lowest fare")) {
+                    retainLowestPriceFlight(flightInfoList);
+                }
+                adapterTicket.updateData(flightInfoList);
+            }
+        }
+    }
+
+    public static void retainLowestPriceFlight(List<FlightInfo> flightInfoList) {
+        if (flightInfoList == null || flightInfoList.isEmpty()) {
+            return; // If the list is null or empty, do nothing
+        }
+
+        FlightInfo lowestPriceFlight = flightInfoList.get(0);
+        for (FlightInfo flight : flightInfoList) {
+            if (flight.getPrice() < lowestPriceFlight.getPrice()) {
+                lowestPriceFlight = flight;
+            }
+        }
+
+        flightInfoList.clear(); // Clear the list
+        flightInfoList.add(lowestPriceFlight); // Add the flight with the lowest price back to the list
+    }
+
+    public static void sortFlightsByDepartureTime(List<FlightInfo> flightInfoList) {
+        Collections.sort(flightInfoList, new Comparator<FlightInfo>() {
+            @Override
+            public int compare(FlightInfo f1, FlightInfo f2) {
+                return (convertTo24HourFormatHaveDistance(f1.getDepartureTime()).compareTo(convertTo24HourFormatHaveDistance(f2.getDepartureTime())));
+            }
+        });
+    }
+
+    public static void sortFlightsByPrice(List<FlightInfo> flightInfoList) {
+        Collections.sort(flightInfoList, new Comparator<FlightInfo>() {
+            @Override
+            public int compare(FlightInfo f1, FlightInfo f2) {
+                return Float.compare(f1.getPrice(), f2.getPrice());
+            }
+        });
+    }
+
+    public static List<FlightInfo> flightInDepartureRange(List<FlightInfo> flightInfoList, String departureTimeRange) {
+        Map<String, String[]> timeRanges = new HashMap<>();
+        timeRanges.put("12AM - 04AM", new String[]{"00:00", "04:00"});
+        timeRanges.put("04AM - 08AM", new String[]{"04:00", "08:00"});
+        timeRanges.put("08AM - 12PM", new String[]{"08:00", "12:00"});
+        timeRanges.put("12PM - 04PM", new String[]{"12:00", "16:00"});
+        timeRanges.put("04PM - 08PM", new String[]{"16:00", "20:00"});
+        timeRanges.put("08PM - 12AM", new String[]{"20:00", "00:00"});
+
+        if (departureTimeRange.equals("All")) {
+            return flightInfoList;
+        }
+
+        String[] range = timeRanges.get(departureTimeRange);
+        if (range == null) {
+            return new ArrayList<>();
+        }
+
+        String low = range[0];
+        String high = range[1];
+
+        List<FlightInfo> newFlightInfoList = new ArrayList<>();
+        for (FlightInfo flightInfo : flightInfoList) {
+            String date = flightInfo.getDepartureTime();
+            String convertedTime = convertTo24HourFormatHaveDistance(date);
+            if (low.compareTo(convertedTime) <= 0 && convertedTime.compareTo(high) <= 0) {
+                newFlightInfoList.add(flightInfo);
+            }
+        }
+        return newFlightInfoList;
+    }
+
+    private static String convertTo24HourFormatHaveDistance(String timeStr) {
+        // Split the time string into components
+        String[] parts = timeStr.split(" ");
+        String time = parts[0];
+        String period = parts[1];
+        String[] timeParts = time.split(":");
+        int hours = Integer.parseInt(timeParts[0]);
+        int minutes = Integer.parseInt(timeParts[1]);
+        // Convert the hours based on the period (AM/PM)
+        if (period.equals("AM")) {
+            if (hours == 12) {
+                hours = 0;  // Midnight case
+            }
+        } else {  // period is "PM"
+            if (hours != 12) {
+                hours += 12;  // Afternoon and evening case
+            }
+        }
+        return String.format("%02d:%02d", hours, minutes);
     }
 
     public static int calculateDateDifference(String date) {

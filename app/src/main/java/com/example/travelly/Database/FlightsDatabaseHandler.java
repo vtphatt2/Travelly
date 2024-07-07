@@ -11,7 +11,10 @@ import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import org.threeten.bp.LocalDate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -209,7 +212,6 @@ public class FlightsDatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-
     public List<FlightInfo> getFlightsByDateAndCities(Integer flightDay, Integer flightMonth, Integer flightYear, String departureCity, String arrivalCity) {
         List<FlightInfo> flightList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -275,6 +277,59 @@ public class FlightsDatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return exists;
+    }
+
+    public List<FlightInfo> getFlightsWithConditions(String departureCity, String arrivalCity, Integer flightDay, Integer flightMonth, Integer flightYear, Double minPrice, Double maxPrice) {
+        List<FlightInfo> flightList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        StringBuilder query = new StringBuilder("SELECT * FROM " + TABLE_FLIGHTS + " WHERE 1=1");
+
+        // Append conditions based on non-null arguments
+        if (departureCity != null) {
+            query.append(" AND ").append(COL_DEPARTURE_CITY).append(" = '").append(departureCity).append("'");
+        }
+        if (arrivalCity != null) {
+            query.append(" AND ").append(COL_ARRIVAL_CITY).append(" = '").append(arrivalCity).append("'");
+        }
+        if (flightDay != null) {
+            query.append(" AND ").append(COL_FLIGHT_DAY).append(" = ").append(flightDay);
+        }
+        if (flightMonth != null) {
+            query.append(" AND ").append(COL_FLIGHT_MONTH).append(" = ").append(flightMonth);
+        }
+        if (flightYear != null) {
+            query.append(" AND ").append(COL_FLIGHT_YEAR).append(" = ").append(flightYear);
+        }
+        if (minPrice != null) {
+            query.append(" AND ").append(COL_PRICE).append(" >= ").append(minPrice);
+        }
+        if (maxPrice != null) {
+            query.append(" AND ").append(COL_PRICE).append(" <= ").append(maxPrice);
+        }
+
+        Cursor cursor = db.rawQuery(query.toString(), null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COL_ID_FLIGHTS));
+                String depCity = cursor.getString(cursor.getColumnIndexOrThrow(COL_DEPARTURE_CITY));
+                String arrCity = cursor.getString(cursor.getColumnIndexOrThrow(COL_ARRIVAL_CITY));
+                int day = cursor.getInt(cursor.getColumnIndexOrThrow(COL_FLIGHT_DAY));
+                int month = cursor.getInt(cursor.getColumnIndexOrThrow(COL_FLIGHT_MONTH));
+                int year = cursor.getInt(cursor.getColumnIndexOrThrow(COL_FLIGHT_YEAR));
+                String depTime = cursor.getString(cursor.getColumnIndexOrThrow(COL_DEPARTURE_TIME));
+                float price = cursor.getFloat(cursor.getColumnIndexOrThrow(COL_PRICE));
+                String number = cursor.getString(cursor.getColumnIndexOrThrow(COL_FLIGHT_NUMBER));
+
+                FlightInfo flight = new FlightInfo(id, depCity, arrCity, day, month, year, depTime, price, number);
+                flightList.add(flight);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return flightList;
     }
 
 
