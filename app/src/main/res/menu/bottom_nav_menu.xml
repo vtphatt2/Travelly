@@ -6,7 +6,7 @@
         android:title="Home" />
     <item
         android:id="@+id/menu_booking"
-        android:icon="@drawable/ic_ticket"
+        android:icon="@drawable/type_ticket"
         android:title="Booking" />
     <item
         android:id="@+id/menu_notifications"

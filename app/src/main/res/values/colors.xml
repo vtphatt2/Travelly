@@ -25,7 +25,7 @@
 
     <!-- Background -->
     <color name="background_white">#FFFFFF</color>
-    <color name="background_screen">#FAFAFA</color>
+    <color name="background_screen">#F5F5F5</color>
     <color name="background_element">#FFFFFF</color>
 
     <!-- UI Element -->
