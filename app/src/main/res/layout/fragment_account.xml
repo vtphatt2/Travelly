@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/background_screen" >
 
     <TextView
+        android:id="@+id/textViewTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_horizontal"
         android:text="Account"
-        android:textSize="25sp"
+        android:textSize="25dp"
         android:textStyle="bold"
-        android:layout_marginTop="@android:dimen/app_icon_size"
-        android:gravity="center_horizontal" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/image_avatar"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/portrait"/>
+        android:src="@drawable/portrait"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
     <TextView
         android:id="@+id/textviewFullName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center_horizontal"
         android:text="Vo Thinh Phat"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal" />
+        app:layout_constraintTop_toBottomOf="@+id/image_avatar" />
 
     <LinearLayout
         android:id="@+id/options_layout"
@@ -39,6 +48,7 @@
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textviewFullName"
         android:layout_marginTop="16dp">
 
         <!--Personal Information-->
@@ -54,12 +64,12 @@
                 android:layout_height="50dp"
                 android:src="@drawable/ic_person_small" />
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Personal information"
                 android:textSize="20dp"
                 android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
                 android:gravity="center_vertical"/>
         </LinearLayout>
 
@@ -81,6 +91,7 @@
                 android:layout_height="match_parent"
                 android:text="Payment and cards"
                 android:textSize="20dp"
+                android:fontFamily="@font/poppins_bold"
                 android:textStyle="bold"
                 android:gravity="center_vertical"/>
         </LinearLayout>
@@ -104,6 +115,7 @@
                 android:text="Saved"
                 android:textSize="20dp"
                 android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
                 android:gravity="center_vertical"/>
         </LinearLayout>
 
@@ -125,6 +137,7 @@
                 android:layout_height="match_parent"
                 android:text="Booking history"
                 android:textSize="20dp"
+                android:fontFamily="@font/poppins_bold"
                 android:textStyle="bold"
                 android:gravity="center_vertical"/>
         </LinearLayout>
@@ -148,6 +161,7 @@
                 android:text="Settings"
                 android:textSize="20dp"
                 android:textStyle="bold"
+                android:fontFamily="@font/poppins_bold"
                 android:gravity="center_vertical"/>
         </LinearLayout>
 
@@ -156,14 +170,17 @@
     <Button
         android:id="@+id/endSessionButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginTop="30dp"
         android:backgroundTint="@color/white"
         android:drawableLeft="@drawable/ic_logout_small"
+        android:fontFamily="@font/poppins_bold"
         android:text="End session"
         android:textColor="#FF0000"
         android:textSize="20dp"
-        app:iconPadding="3dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/options_layout" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

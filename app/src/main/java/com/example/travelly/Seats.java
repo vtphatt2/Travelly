@@ -27,6 +27,7 @@ public class Seats extends AppCompatActivity implements SeatAdapter.OnButtonClic
     private ImageButton btnBack;
     private float priceTicket;
     private Button btnContinue;
+    private String departureCity, arrivalCity, departureDate, departureTime, number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,11 @@ public class Seats extends AppCompatActivity implements SeatAdapter.OnButtonClic
         });
 
         Intent intent = getIntent();
+        departureCity = intent.getStringExtra("DEPARTURE_CITY");
+        arrivalCity = intent.getStringExtra("ARRIVAL_CITY");
+        departureDate = intent.getStringExtra("DEPARTURE_DATE");
+        departureTime = intent.getStringExtra("DEPARTURE_TIME");
+        number = intent.getStringExtra("NUMBER");
         priceTicket = intent.getFloatExtra("PRICE", 0);
 
         List<Integer> SeatRow = new ArrayList<Integer>();
@@ -65,8 +71,16 @@ public class Seats extends AppCompatActivity implements SeatAdapter.OnButtonClic
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Seats.this, BoardingPass.class);
-                startActivity(intent);
+                if (seatCode.size() > 0) {
+                    Intent intent = new Intent(Seats.this, BoardingPass.class);
+                    intent.putExtra("DEPARTURE_CITY", departureCity);
+                    intent.putExtra("ARRIVAL_CITY", arrivalCity);
+                    intent.putExtra("DEPARTURE_DATE", departureDate);
+                    intent.putExtra("DEPARTURE_TIME", departureTime);
+                    intent.putExtra("NUMBER", number);
+                    intent.putExtra("SEAT_CODE", String.join(",", seatCode));
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -106,6 +120,6 @@ public class Seats extends AppCompatActivity implements SeatAdapter.OnButtonClic
             }
         }
         tvSelectedSeat.setText(str);
-        tvTotalPrice.setText("Total price: $" + String.valueOf(seatCode.size() * priceTicket));
+        tvTotalPrice.setText(String.valueOf(seatCode.size() * priceTicket));
     }
 }

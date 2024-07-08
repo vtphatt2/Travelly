@@ -53,8 +53,8 @@
 
     <ImageButton
         android:id="@+id/buttonFilter"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:background="@drawable/default_round_square"
         android:backgroundTint="@color/peach_300"
         android:padding="10dp"
