@@ -122,8 +122,7 @@ public class Account extends Fragment {
                 .setTitle("Confirm Exit")
                 .setMessage("Are you sure you want to close the app?")
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                    requireActivity().finish();
-                    System.exit(0);
+                    requireActivity().finishAffinity();
                 }).setNegativeButton(android.R.string.cancel, (dialog, which) -> {
                     dialog.dismiss();
                 }).show();

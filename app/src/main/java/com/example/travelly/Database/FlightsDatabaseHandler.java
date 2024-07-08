@@ -82,55 +82,16 @@ public class FlightsDatabaseHandler extends SQLiteOpenHelper {
 
     public void addFamousCities() {
         String[][] cities = {
+                {"Amsterdam", "AMS"},
+                {"Barcelona", "BCN"},
                 {"London", "LDN"},
                 {"New York", "NYC"},
                 {"Paris", "PAR"},
-                {"Tokyo", "TYO"},
                 {"Rome", "ROM"},
-                {"Dubai", "DXB"},
                 {"Singapore", "SIN"},
-                {"Barcelona", "BCN"},
-                {"Istanbul", "IST"},
-                {"Amsterdam", "AMS"},
-                {"Hong Kong", "HKG"},
-                {"Bangkok", "BKK"},
-                {"Sydney", "SYD"},
+                {"Tokyo", "TYO"},
                 {"Los Angeles", "LAX"},
-                {"Las Vegas", "LAS"},
-                {"Miami", "MIA"},
-                {"Toronto", "YYZ"},
-                {"San Francisco", "SFO"},
-                {"Chicago", "CHI"},
-                {"Moscow", "MOW"},
-                {"Berlin", "BER"},
-                {"Vienna", "VIE"},
-                {"Madrid", "MAD"},
-                {"Prague", "PRG"},
-                {"Dublin", "DUB"},
-                {"Copenhagen", "CPH"},
-                {"Stockholm", "STO"},
-                {"Zurich", "ZRH"},
-                {"Venice", "VCE"},
-                {"Munich", "MUC"},
-                {"Buenos Aires", "BUE"},
-                {"Mexico City", "MEX"},
-                {"Cape Town", "CPT"},
-                {"Rio de Janeiro", "RIO"},
-                {"Sao Paulo", "SAO"},
-                {"Athens", "ATH"},
-                {"Lisbon", "LIS"},
-                {"Budapest", "BUD"},
-                {"Warsaw", "WAW"},
-                {"Seoul", "SEL"},
-                {"Osaka", "OSA"},
-                {"Kuala Lumpur", "KUL"},
-                {"Jakarta", "JKT"},
-                {"Manila", "MNL"},
-                {"Taipei", "TPE"},
-                {"Shanghai", "SHA"},
-                {"Beijing", "BJS"},
-                {"Mumbai", "BOM"},
-                {"Delhi", "DEL"}
+                {"Hong Kong", "HKG"}
         };
 
         for (String[] city : cities) {
@@ -185,7 +146,7 @@ public class FlightsDatabaseHandler extends SQLiteOpenHelper {
             for (int j = 0; j < numberOfCities; j++) {
                 String departureCity = cities.get(i);
                 String arrivalCity = cities.get(j);
-                for (int t = 0; t < 30; t++) {
+                for (int t = 0; t < 5; t++) {
                     LocalDate date = currentDate.plusDays(t);
                     int flightDay = date.getDayOfMonth();
                     int flightMonth = date.getMonthValue();
