@@ -27,7 +27,7 @@
         android:layout_marginTop="30dp"
         android:fontFamily="@font/poppins_bold"
         android:gravity="center_horizontal"
-        android:text="Booking"
+        android:text="Transport Booking"
         android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent" />
@@ -54,7 +54,7 @@
         android:fontFamily="@font/poppins_bold"
         android:text="From"
         android:textColor="@color/text_secondary"
-        android:textSize="15sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/autoCompleteTextViewFrom"
         app:layout_constraintTop_toTopOf="@+id/autoCompleteTextViewFrom" />
 
@@ -80,7 +80,7 @@
         android:fontFamily="@font/poppins_bold"
         android:text="To"
         android:textColor="@color/text_secondary"
-        android:textSize="15sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/autoCompleteTextViewTo"
         app:layout_constraintTop_toTopOf="@+id/autoCompleteTextViewTo" />
 
@@ -137,7 +137,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Departure"
                 android:textColor="@color/text_secondary"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 app:layout_constraintLeft_toLeftOf="@+id/textViewDepartureDate"
                 app:layout_constraintTop_toTopOf="@+id/textViewDepartureDate" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -170,7 +170,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Return"
                 android:textColor="@color/text_secondary"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 app:layout_constraintLeft_toLeftOf="@+id/textViewReturnDate"
                 app:layout_constraintTop_toTopOf="@+id/textViewReturnDate" />
         </androidx.constraintlayout.widget.ConstraintLayout>
