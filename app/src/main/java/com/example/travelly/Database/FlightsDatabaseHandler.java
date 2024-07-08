@@ -197,7 +197,7 @@ public class FlightsDatabaseHandler extends SQLiteOpenHelper {
                         String departureTime = String.format("%02d:%02d %s", hour, minute, random.nextBoolean() ? "AM" : "PM");
 
                         // Generate ticket price rounded to 1 decimal place
-                        double ticketPrice = Math.round((100 + (1000 - 100) * random.nextDouble()) * 10.0) / 10.0;
+                        double ticketPrice = 100 + Math.round((random.nextDouble() * 900.0) * 10.0) / 10.0;
 
                         // Generate flight number
                         String flightNumber = String.format("%s-%02d", departureCity.substring(0, 1).toUpperCase() + arrivalCity.substring(0, 1).toUpperCase(), random.nextInt(900) + 100);

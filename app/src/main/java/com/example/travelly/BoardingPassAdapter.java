@@ -1,4 +1,4 @@
-package com.example.travelly.Database;
+package com.example.travelly;
 
 import android.content.Context;
 import android.view.LayoutInflater;

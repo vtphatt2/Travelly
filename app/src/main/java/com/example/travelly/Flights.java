@@ -44,7 +44,7 @@ public class Flights extends AppCompatActivity {
     private TicketItemAdapter adapterTicket;
     private CalendarAdapter adapterCalendar;
     private String departureTimeRange = "All", arrivalTimeRange = "All", sortBy = "Price";
-    private double minPrice = 250, maxPrice = 500;
+    private double minPrice = 300, maxPrice = 900;
     private boolean isChooseCoffee = false, isChooseForkKnife = false, isChooseWifi = false, isChooseSnowFlake = false;
 
     @Override

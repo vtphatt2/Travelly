@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Filter">
+    tools:context=".Filter"
+    android:background="@color/background_screen">
 
     <ImageButton
         android:id="@+id/buttonBack"
@@ -104,7 +105,7 @@
             android:id="@+id/sliderPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:valueFrom="200"
+            android:valueFrom="0"
             android:valueTo="1000"
             app:labelBehavior="gone"
             app:thumbRadius="12dp"
@@ -117,78 +118,71 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:padding="10dp"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/editTextFrom"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="30dp"
+                    android:background="@drawable/search_bar_round_square"
+                    android:backgroundTint="@color/white"
+                    android:paddingLeft="25dp"
+                    android:text="$250"
+                    android:paddingTop="17dp"
+                    android:textSize="17dp"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/poppins_bold"
                     android:text="From"
-                    android:textSize="20dp" />
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@+id/editTextFrom"
+                    app:layout_constraintTop_toTopOf="@+id/editTextFrom" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="$"
-                        android:textSize="18dp" />
-
-                    <EditText
-                        android:id="@+id/editTextFrom"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="250"
-                        android:textSize="18dp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:padding="10dp"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/editTextTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="30dp"
+                    android:background="@drawable/search_bar_round_square"
+                    android:backgroundTint="@color/white"
+                    android:paddingLeft="25dp"
+                    android:text="$1000"
+                    android:paddingTop="17dp"
+                    android:textSize="17dp"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="To"
-                    android:textSize="20dp" />
-
-                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="To"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@+id/editTextTo"
+                    app:layout_constraintTop_toTopOf="@+id/editTextTo" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="$"
-                        android:textSize="18dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <EditText
-                        android:id="@+id/editTextTo"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="500"
-                        android:textSize="18dp" />
-                </LinearLayout>
-            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
@@ -222,6 +216,7 @@
                 android:adjustViewBounds="false"
                 android:background="@drawable/default_item_filter"
                 android:scaleType="fitCenter"
+                android:padding="8dp"
                 android:src="@drawable/coffee"
                 app:tint="@color/green_500"/>
 
@@ -233,6 +228,7 @@
                 android:adjustViewBounds="false"
                 android:background="@drawable/default_item_filter"
                 android:scaleType="fitCenter"
+                android:padding="8dp"
                 android:src="@drawable/forkknife"
                 app:tint="@color/green_500" />
 
@@ -243,6 +239,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/default_item_filter"
                 android:scaleType="fitCenter"
+                android:padding="8dp"
                 android:src="@drawable/wifi"
                 app:tint="@color/green_500" />
 
@@ -253,6 +250,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/default_item_filter"
                 android:scaleType="fitCenter"
+                android:padding="8dp"
                 android:src="@drawable/snowflake"
                 app:tint="@color/green_500" />
 

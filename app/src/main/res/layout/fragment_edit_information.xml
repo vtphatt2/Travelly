@@ -80,8 +80,6 @@
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@+id/edit_text_FirstName"
                 app:layout_constraintTop_toTopOf="@+id/edit_text_FirstName" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--First name-->
