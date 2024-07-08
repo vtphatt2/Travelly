@@ -48,9 +48,11 @@ public class Loading extends AppCompatActivity {
 
     private void initializeData() {
         FlightsDatabaseHandler db = new FlightsDatabaseHandler(this);
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = today.minusDays(1);
 
-        LocalDate currentDate = LocalDate.now();
-        if (db.flightExistsWithSpecificDate(currentDate.getDayOfMonth(), currentDate.getMonthValue(), currentDate.getYear())) {
+        if (db.flightExistsWithSpecificDate(today.getDayOfMonth(), today.getMonthValue(), today.getYear())
+        && !(db.flightExistsWithSpecificDate(yesterday.getDayOfMonth(), yesterday.getMonthValue(), yesterday.getYear()))) {
             // Stage 1: Delete all tables
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 updateLoadingProgress(STAGE_ONE_PROGRESS);
