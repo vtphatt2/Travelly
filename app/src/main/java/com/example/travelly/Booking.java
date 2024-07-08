@@ -1,5 +1,6 @@
 package com.example.travelly;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -49,7 +50,13 @@ public class Booking extends Fragment {
             public void onClick(View v) {
                 int position = (int) v.getTag();
                 BookingItem item = itemList.get(position);
-                showDialog(item.getTitle());
+                if (item.getTitle().equals("Transport")) {
+                    Intent intent = new Intent(requireContext(), TransportBooking.class);
+                    startActivity(intent);
+                }
+                else {
+                    showDialog(item.getTitle());
+                }
             }
         });
         listView.setAdapter(customAdapter);

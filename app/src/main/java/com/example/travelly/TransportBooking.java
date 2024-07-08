@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
@@ -32,11 +33,11 @@ import java.util.List;
 
 public class TransportBooking extends AppCompatActivity {
     ImageButton btnBack, btnSwap;
-    Spinner spnFromCity, spnToCity;
+    AutoCompleteTextView actvFromCity, actvToCity;
     TextView tvDeparture, tvReturn, tvEconomy, tvBusiness;
     ImageView ivPlane, ivBoat, ivTrain, ivBus;
     Button btnSearch;
-    String departureCity, arrivalCity;
+    String departureCity = "", arrivalCity = "";
     FlightsDatabaseHandler db;
 
     @Override
@@ -52,6 +53,19 @@ public class TransportBooking extends AppCompatActivity {
         });
 
         btnBack = findViewById(R.id.buttonBack);
+        actvFromCity = findViewById(R.id.autoCompleteTextViewFrom);
+        actvToCity = findViewById(R.id.autoCompleteTextViewTo);
+        btnSwap = findViewById(R.id.buttonSwap);
+        tvDeparture = findViewById(R.id.textViewDepartureDate);
+        tvReturn = findViewById(R.id.textViewReturnDate);
+        tvEconomy = findViewById(R.id.textViewEconomy);
+        tvBusiness = findViewById(R.id.textViewBusiness);
+        ivPlane = findViewById(R.id.imageViewPlane);
+        ivBoat = findViewById(R.id.imageViewBoat);
+        ivTrain = findViewById(R.id.imageViewTrain);
+        ivBus = findViewById(R.id.imageViewBus);
+        db = new FlightsDatabaseHandler(this);
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,50 +73,21 @@ public class TransportBooking extends AppCompatActivity {
             }
         });
 
-        db = new FlightsDatabaseHandler(this);
         List<String> cityList = db.getAllCities();
-        spnFromCity = findViewById(R.id.spinnerFromCity);
-        spnToCity = findViewById(R.id.spinnerToCity);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_city_item, cityList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnFromCity.setAdapter(adapter);
-        spnToCity.setAdapter(adapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, cityList);
+        actvFromCity.setAdapter(adapter);
+        actvToCity.setAdapter(adapter);
 
-        spnFromCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                departureCity = parent.getItemAtPosition(position).toString();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Do nothing
-            }
-        });
-
-        spnToCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                arrivalCity = parent.getItemAtPosition(position).toString();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Do nothing
-            }
-        });
-
-        btnSwap = findViewById(R.id.buttonSwap);
         btnSwap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int spinner1Position = spnFromCity.getSelectedItemPosition();
-                int spinner2Position = spnToCity.getSelectedItemPosition();
-                spnFromCity.setSelection(spinner2Position);
-                spnToCity.setSelection(spinner1Position);
+                String fromCitySelected = actvFromCity.getText().toString();
+                String toCitySelected = actvToCity.getText().toString();
+                actvFromCity.setText(toCitySelected);
+                actvToCity.setText(fromCitySelected);
             }
         });
 
-        tvDeparture = findViewById(R.id.textViewDepartureDate);
-        tvReturn = findViewById(R.id.textViewReturnDate);
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String currentDateString = currentDate.format(formatter);
@@ -122,32 +107,25 @@ public class TransportBooking extends AppCompatActivity {
             }
         });
 
-        tvEconomy = findViewById(R.id.textViewEconomy);
-        tvBusiness = findViewById(R.id.textViewBusiness);
         tvEconomy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvEconomy.setTextColor(Color.parseColor("#FFFFFF"));
-                tvEconomy.setBackgroundColor(Color.parseColor("#089093"));
-                tvBusiness.setTextColor(Color.parseColor("#089093"));
-                tvBusiness.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                tvEconomy.setTextColor(getResources().getColor(R.color.white));
+                tvEconomy.setBackgroundTintList(getResources().getColorStateList(R.color.green_500));
+                tvBusiness.setTextColor(getResources().getColor(R.color.green_500));
+                tvBusiness.setBackgroundTintList(getResources().getColorStateList(R.color.white));
             }
         });
 
         tvBusiness.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvBusiness.setTextColor(Color.parseColor("#FFFFFF"));
-                tvBusiness.setBackgroundColor(Color.parseColor("#089093"));
-                tvEconomy.setTextColor(Color.parseColor("#089093"));
-                tvEconomy.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                tvBusiness.setTextColor(getResources().getColor(R.color.white));
+                tvBusiness.setBackgroundTintList(getResources().getColorStateList(R.color.green_500));
+                tvEconomy.setTextColor(getResources().getColor(R.color.green_500));
+                tvEconomy.setBackgroundTintList(getResources().getColorStateList(R.color.white));
             }
         });
-
-        ivPlane = findViewById(R.id.imageViewPlane);
-        ivBoat = findViewById(R.id.imageViewBoat);
-        ivTrain = findViewById(R.id.imageViewTrain);
-        ivBus = findViewById(R.id.imageViewBus);
 
         ivBoat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +153,8 @@ public class TransportBooking extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TransportBooking.this, Flights.class);
+                departureCity = actvFromCity.getText().toString();
+                arrivalCity = actvToCity.getText().toString();
                 intent.putExtra("DEPARTURE_CITY", departureCity);
                 intent.putExtra("ARRIVAL_CITY", arrivalCity);
                 intent.putExtra("DEPARTURE_DATE", tvDeparture.getText().toString());
@@ -209,5 +189,4 @@ public class TransportBooking extends AppCompatActivity {
         builder.setPositiveButton("OK", null);
         builder.show();
     }
-
 }
