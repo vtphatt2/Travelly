@@ -69,11 +69,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTicket"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAnnounce" />
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonFilter"
+        tools:layout_editor_absoluteX="10dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

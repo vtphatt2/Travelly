@@ -43,9 +43,8 @@ public class Flights extends AppCompatActivity {
     private List<FlightInfo> flightInfoList;
     private TicketItemAdapter adapterTicket;
     private CalendarAdapter adapterCalendar;
-    private String departureTimeRange = "All", arrivalTimeRange = "All";
+    private String departureTimeRange = "All", arrivalTimeRange = "All", sortBy = "Price";
     private double minPrice = 250, maxPrice = 500;
-    private String sortBy = "Price";
     private boolean isChooseCoffee = false, isChooseForkKnife = false, isChooseWifi = false, isChooseSnowFlake = false;
 
     @Override
@@ -107,7 +106,6 @@ public class Flights extends AppCompatActivity {
 
         tvAnnounce = findViewById(R.id.textViewAnnounce);
         tvAnnounce.setText(String.valueOf(flightInfoList.size()) + " flights available " + extractCityName(departureCity) + " to " + extractCityName(arrivalCity));
-
 
         btnFilter = findViewById(R.id.buttonFilter);
         btnFilter.setOnClickListener(new View.OnClickListener() {
